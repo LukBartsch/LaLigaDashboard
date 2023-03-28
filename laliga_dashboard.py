@@ -24,6 +24,7 @@ print(head_row)
 
 
 body_row=[]
+logos = []
 
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).tbody
 main_table_body = main_table.find_all('tr')
@@ -35,6 +36,12 @@ for row in main_table_body:
     # print(len(cols))
     body_row.append(cols)
 
+    logos_src = row.find_all('img')
+    logos_src = logos_src[0].get('src')
+    logos.append(logos_src)
+
 
 for team in body_row:
     print(team)
+
+print(logos)
