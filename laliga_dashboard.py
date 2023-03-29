@@ -25,6 +25,20 @@ for row in main_table_head:
 print(head_row)
 
 
+
+tooltips_header = []
+
+main_table_tooltips = main_table.find_all ('span')
+
+for span in main_table_tooltips: 
+    # print(span.text.strip())
+    tooltips_header.append(span.text.strip())
+
+print(tooltips_header)
+print(len(tooltips_header))
+
+
+
 body_row=[]
 logos = []
 
