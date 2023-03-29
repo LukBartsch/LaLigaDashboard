@@ -1,5 +1,7 @@
 import requests
+
 from bs4 import BeautifulSoup
+import pandas as pd
 
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
@@ -44,4 +46,11 @@ for row in main_table_body:
 for team in body_row:
     print(team)
 
-print(logos)
+# print(logos)
+
+df = pd.DataFrame(body_row, columns = head_row)
+
+print(df)
+
+data=df.to_dict("records")
+columns = [{"name": i, "id": i} for i in df.columns]
