@@ -3,81 +3,40 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from data_manage import get_head_row, get_tooltips_row, get_body_rows
+
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
 response = requests.get(url)
 
 soup = BeautifulSoup(response.text, 'html.parser')
-print(soup.title)
 
-# print(soup.table)
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).thead
 main_table_head = main_table.find_all ('th')
 
-head_row=[]
 
-for row in main_table_head:
-    if len(row.contents)>0:
-        head_row.append(row.contents[0].text.strip())
-    else:
-        head_row.append('')
+head_row = get_head_row(main_table_head)
 
-print(head_row)
-print(len(head_row))
+# print(head_row)
+# print(len(head_row))
 
 
+tooltips_head_row = get_tooltips_row(main_table_head)
 
-tooltips_header = []
-
-# main_table_tooltips = main_table.find_all ('span')
-
-# for span in main_table_tooltips: 
-#     # print(span.text.strip())
-#     tooltips_header.append(span.text.strip())
-
-# print(tooltips_header)
-# print(len(tooltips_header))
+# print(tooltips_head_row)
+# print(len(tooltips_head_row))
 
 
-main_table_tooltips = main_table.find_all ('th')
-
-for th in main_table_tooltips:
-    span=th.find('span')
-    if span:
-        tooltips_header.append(span.text.strip())
-    else:
-        tooltips_header.append('')
-
-
-print(tooltips_header)
-print(len(tooltips_header))
-
-
-
-body_row=[]
-logos = []
 
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).tbody
 main_table_body = main_table.find_all('tr')
 
-for row in main_table_body:
-    cols=row.find_all('td')
-    cols=[x.text.strip() for x in cols]
-    # print(cols)
-    # print(len(cols))
-    body_row.append(cols)
-
-    logos_src = row.find_all('img')
-    logos_src = logos_src[0].get('src')
-    logos.append(logos_src)
+body_rows, logos = get_body_rows(main_table_body) 
 
 
-for team in body_row:
-    print(team)
 
-# print(logos)
 
-df = pd.DataFrame(body_row, columns = head_row)
+df = pd.DataFrame(body_rows, columns = head_row)
 
 print(df)
 
