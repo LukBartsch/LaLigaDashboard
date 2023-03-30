@@ -23,16 +23,31 @@ for row in main_table_head:
         head_row.append('')
 
 print(head_row)
+print(len(head_row))
 
 
 
 tooltips_header = []
 
-main_table_tooltips = main_table.find_all ('span')
+# main_table_tooltips = main_table.find_all ('span')
 
-for span in main_table_tooltips: 
-    # print(span.text.strip())
-    tooltips_header.append(span.text.strip())
+# for span in main_table_tooltips: 
+#     # print(span.text.strip())
+#     tooltips_header.append(span.text.strip())
+
+# print(tooltips_header)
+# print(len(tooltips_header))
+
+
+main_table_tooltips = main_table.find_all ('th')
+
+for th in main_table_tooltips:
+    span=th.find('span')
+    if span:
+        tooltips_header.append(span.text.strip())
+    else:
+        tooltips_header.append('')
+
 
 print(tooltips_header)
 print(len(tooltips_header))
