@@ -31,7 +31,7 @@ tooltips_head_row = get_tooltips_row(main_table_head)
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).tbody
 main_table_body = main_table.find_all('tr')
 
-body_rows, logos = get_body_rows(main_table_body) 
+body_rows = get_body_rows(main_table_body) 
 
 
 
