@@ -32,15 +32,17 @@ def get_tooltips_row(main_table_head):
 def get_body_rows(main_table_body):
 
     body_rows = []
-    logos = []
 
     for row in main_table_body:
         cols=row.find_all('td')
         cols=[x.text.strip() for x in cols]
+        
+        logo_src = row.find_all('img')
+        logo_src = logo_src[0].get('src')
+        logo_markdown_url=f"[![Logo](h{logo_src})](https://cdn.footystats.org)"
+
+        cols[1]=logo_markdown_url
+
         body_rows.append(cols)
 
-        logos_src = row.find_all('img')
-        logos_src = logos_src[0].get('src')
-        logos.append(logos_src)
-
-    return body_rows, logos
+    return body_rows
