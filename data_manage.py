@@ -9,6 +9,12 @@ def get_head_row(main_table_head):
             head_row.append(row.contents[0].text.strip())
         else:
             head_row.append('')
+
+    head_row[0]='Pos'
+    head_row[1]='Logo'
+    head_row[16]='YC'
+    head_row[17]='Cor'
+
     
     return head_row
 
@@ -39,7 +45,7 @@ def get_body_rows(main_table_body):
         
         logo_src = row.find_all('img')
         logo_src = logo_src[0].get('src')
-        logo_markdown_url=f"[![Logo](h{logo_src})](https://cdn.footystats.org)"
+        logo_markdown_url=f"[![Logo]({logo_src})](https://cdn.footystats.org)"
 
         cols[1]=logo_markdown_url
 
