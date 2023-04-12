@@ -1,5 +1,6 @@
 import requests
 
+from dash import Dash, dash_table
 from bs4 import BeautifulSoup
 import pandas as pd
 
@@ -38,7 +39,25 @@ body_rows = get_body_rows(main_table_body)
 
 df = pd.DataFrame(body_rows, columns = head_row)
 
-print(df)
+
 
 data=df.to_dict("records")
 columns = [{"name": i, "id": i} for i in df.columns]
+columns[1].update({"presentation": "markdown"})
+
+
+app = Dash(__name__)
+
+app.layout = dash_table.DataTable(
+                data, 
+                columns,
+                style_data={
+                    'whiteSpace': 'normal',
+                    'height': 'auto'
+                },
+                fill_width=False,
+                style_cell={'padding': '10px'},
+                )
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
