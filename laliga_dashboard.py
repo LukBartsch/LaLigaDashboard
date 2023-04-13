@@ -1,6 +1,6 @@
 import requests
 
-from dash import Dash, dash_table
+from dash import Dash, dash_table, html
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -61,13 +61,27 @@ main_table = dash_table.DataTable(
                         'padding-left': '10px',
                         'text-align': 'center',
                         'marginLeft': 'auto',
-                        'marginRight': 'auto'
+                        'marginRight': 'auto',
+                        'backgroundColor': '#111111',
+                        'color': '#ffffff'
                     },
                 )
+
+table_title = html.H2(
+                    "La Liga Table (Spain) - 2022/23",
+                    style={
+                        'text-align': 'center',
+                        'marginLeft': 'auto',
+                        'marginRight': 'auto',
+                        'padding': '10px'
+                    })
 
 
 app.layout = dbc.Container([
                 dbc.Row([
+                    dbc.Col(
+                        table_title     
+                    ),
                     dbc.Col(
                         main_table,
                     )]
