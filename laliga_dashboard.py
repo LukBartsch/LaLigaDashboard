@@ -1,6 +1,7 @@
 import requests
 
 from dash import Dash, dash_table
+import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
@@ -46,18 +47,33 @@ columns = [{"name": i, "id": i} for i in df.columns]
 columns[1].update({"presentation": "markdown"})
 
 
-app = Dash(__name__)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-app.layout = dash_table.DataTable(
-                data, 
-                columns,
-                style_data={
-                    'whiteSpace': 'normal',
-                    'height': 'auto'
-                },
-                fill_width=False,
-                style_cell={'padding': '10px'},
+
+main_table = dash_table.DataTable(
+                    data, 
+                    columns,
+                    row_deletable=True,
+                    export_headers='display',
+                    fill_width=False,
+                    style_cell={
+                        'padding-right': '10px',
+                        'padding-left': '10px',
+                        'text-align': 'center',
+                        'marginLeft': 'auto',
+                        'marginRight': 'auto'
+                    },
                 )
+
+
+app.layout = dbc.Container([
+                dbc.Row([
+                    dbc.Col(
+                        main_table,
+                    )]
+                )
+            ])
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
