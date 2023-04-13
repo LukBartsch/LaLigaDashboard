@@ -31,6 +31,8 @@ def get_tooltips_row(main_table_head):
         else:
             tooltips_head_row.append('')
 
+    tooltips_head_row[12]='Points Per Game'
+
     return tooltips_head_row
 
 
