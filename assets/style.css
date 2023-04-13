@@ -1,0 +1,5 @@
+body {
+    background: linear-gradient(rgb(38,38,38,0.5), rgb(38,38,38,0.5)), url("/static/pexels-pixabay-47343.jpg") no-repeat center fixed;
+    background-size: cover;
+    background-color: #3a3a3a;
+  }
