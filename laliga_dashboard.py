@@ -56,6 +56,14 @@ main_table = dash_table.DataTable(
                     row_deletable=True,
                     export_headers='display',
                     fill_width=False,
+                    style_header={
+                        'backgroundColor': 'rgb(30, 30, 30)',
+                        'color': '#007eff',
+                        'textAlign': 'center',
+                        'fontWeight': 'bold',
+                        'fontSize': '20px',
+                        'height': '50px',
+                    },
                     style_cell={
                         'padding-right': '10px',
                         'padding-left': '10px',
@@ -73,7 +81,8 @@ table_title = html.H2(
                         'text-align': 'center',
                         'marginLeft': 'auto',
                         'marginRight': 'auto',
-                        'padding': '10px'
+                        'padding': '10px',
+                        'color': '#ffffff'
                     })
 
 
