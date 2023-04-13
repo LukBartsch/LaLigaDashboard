@@ -47,12 +47,16 @@ columns = [{"name": i, "id": i} for i in df.columns]
 columns[1].update({"presentation": "markdown"})
 
 
+tooltip_dict = dict(zip(head_row, tooltips_head_row))
+
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
 main_table = dash_table.DataTable(
                     data, 
                     columns,
+                    tooltip_header=tooltip_dict,
                     row_deletable=True,
                     export_headers='display',
                     fill_width=False,
@@ -63,6 +67,8 @@ main_table = dash_table.DataTable(
                         'fontWeight': 'bold',
                         'fontSize': '20px',
                         'height': '50px',
+                        'textDecoration': 'underline',
+                        'textDecorationStyle': 'dotted',
                     },
                     style_cell={
                         'padding-right': '10px',
@@ -73,6 +79,8 @@ main_table = dash_table.DataTable(
                         'backgroundColor': '#111111',
                         'color': '#ffffff'
                     },
+                    tooltip_delay=0,
+                    tooltip_duration=None
                 )
 
 table_title = html.H2(
