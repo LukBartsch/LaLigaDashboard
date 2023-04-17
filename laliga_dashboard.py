@@ -87,11 +87,39 @@ main_table = dash_table.DataTable(
                         },
                         {
                             'if': {'column_id': 'GF'},
-                            'color': 'green',
+                            'color': '#2E8B57',
                         },
                         {
                             'if': {'column_id': 'GA'},
                             'color': 'tomato',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{PPG} > 2',
+                                'column_id': 'PPG'
+                            },
+                            'backgroundColor': '#2E8B57',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{PPG} > 1.5 && {PPG} <= 2' ,
+                                'column_id': 'PPG'
+                            },
+                            'backgroundColor': '#91BC80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{PPG} > 1.1 && {PPG} <= 1.5' ,
+                                'column_id': 'PPG'
+                            },
+                            'backgroundColor': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{PPG} <= 1.1' ,
+                                'column_id': 'PPG'
+                            },
+                            'backgroundColor': '#C85F46',
                         },
                     ],
                     tooltip_delay=0,
