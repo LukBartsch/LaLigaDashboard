@@ -3,3 +3,8 @@ body {
     background-size: cover;
     background-color: #3a3a3a;
   }
+
+
+img[src*="#thumbnail"] {
+    width:30px;
+ }
