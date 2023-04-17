@@ -39,6 +39,8 @@ body_rows = get_body_rows(main_table_body)
 
 
 df = pd.DataFrame(body_rows, columns = head_row)
+df.drop('YC', inplace=True, axis=1)
+df.drop('Cor', inplace=True, axis=1)
 
 
 
@@ -48,7 +50,6 @@ columns[1].update({"presentation": "markdown"})
 
 
 tooltip_dict = dict(zip(head_row, tooltips_head_row))
-
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
