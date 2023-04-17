@@ -79,6 +79,12 @@ main_table = dash_table.DataTable(
                         'backgroundColor': '#111111',
                         'color': '#ffffff'
                     },
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(30, 30, 30)',
+                        }
+                    ],
                     tooltip_delay=0,
                     tooltip_duration=None
                 )
