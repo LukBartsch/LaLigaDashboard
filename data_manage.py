@@ -47,7 +47,7 @@ def get_body_rows(main_table_body):
         
         logo_src = row.find_all('img')
         logo_src = logo_src[0].get('src')
-        logo_markdown_url=f"[![Logo]({logo_src})](https://cdn.footystats.org)"
+        logo_markdown_url=f"[![Logo]({logo_src}#thumbnail)](https://cdn.footystats.org)"
 
         cols[1]=logo_markdown_url
 

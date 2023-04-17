@@ -67,7 +67,7 @@ main_table = dash_table.DataTable(
                         'textAlign': 'center',
                         'fontWeight': 'bold',
                         'fontSize': '20px',
-                        'height': '50px',
+                        'height': '40px',
                         'textDecoration': 'underline',
                         'textDecorationStyle': 'dotted',
                     },
@@ -80,6 +80,14 @@ main_table = dash_table.DataTable(
                         'backgroundColor': '#111111',
                         'color': '#ffffff'
                     },
+                    css=[{
+                        'selector': '.dash-spreadsheet td div',
+                        'rule': '''
+                            line-height: 15px;
+                            max-height: 30px; min-height: 30px; height: 30px;
+                            overflow-y: hidden;
+                        '''
+                    }],
                     style_data_conditional=[
                         {
                             'if': {'row_index': 'odd'},
@@ -120,6 +128,10 @@ main_table = dash_table.DataTable(
                                 'column_id': 'PPG'
                             },
                             'backgroundColor': '#C85F46',
+                        },
+                        {
+                            'if': {'column_id': 'Logo'},
+                            'padding-left': '16px',
                         },
                     ],
                     tooltip_delay=0,
