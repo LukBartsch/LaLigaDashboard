@@ -83,7 +83,15 @@ main_table = dash_table.DataTable(
                         {
                             'if': {'row_index': 'odd'},
                             'backgroundColor': 'rgb(30, 30, 30)',
-                        }
+                        },
+                        {
+                            'if': {'column_id': 'GF'},
+                            'color': 'green',
+                        },
+                        {
+                            'if': {'column_id': 'GA'},
+                            'color': 'tomato',
+                        },
                     ],
                     tooltip_delay=0,
                     tooltip_duration=None
