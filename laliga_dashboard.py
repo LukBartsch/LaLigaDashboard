@@ -58,7 +58,6 @@ main_table = dash_table.DataTable(
                     data, 
                     columns,
                     tooltip_header=tooltip_dict,
-                    row_deletable=True,
                     export_headers='display',
                     fill_width=False,
                     style_header={
@@ -126,6 +125,27 @@ main_table = dash_table.DataTable(
                             'if': {
                                 'filter_query': '{PPG} <= 1.1' ,
                                 'column_id': 'PPG'
+                            },
+                            'backgroundColor': '#C85F46',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{Pos} >= 1 && {Pos} <= 4' ,
+                                'column_id': 'Pos'
+                            },
+                            'backgroundColor': '#2E8B57',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{Pos} >= 5 && {Pos} <= 6' ,
+                                'column_id': 'Pos'
+                            },
+                            'backgroundColor': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{Pos} >= 18 && {Pos} <= 20' ,
+                                'column_id': 'Pos'
                             },
                             'backgroundColor': '#C85F46',
                         },
