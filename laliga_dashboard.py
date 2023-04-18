@@ -54,10 +54,13 @@ tooltip_dict = dict(zip(head_row, tooltips_head_row))
 zone_explanation = soup.find ('ul', {'class':'zone-explanation'})
 zone_explanation_list = zone_explanation.find_all('li')
 
-zone_explanation_legend = get_zone_explanation(zone_explanation_list)
+main_table_legend = get_zone_explanation(zone_explanation_list)
+
+df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
+legend_data=df_legend.to_dict("records")
+legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 
 
-# print(zone_explanation_legend)
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -160,7 +163,7 @@ main_table = dash_table.DataTable(
                         {
                             'if': {'column_id': 'Logo'},
                             'padding-left': '16px',
-                        },
+                        }
                     ],
                     tooltip_delay=0,
                     tooltip_duration=None
@@ -177,6 +180,57 @@ table_title = html.H2(
                     })
 
 
+main_table_legend = dash_table.DataTable(
+                    legend_data, 
+                    legend_columns,
+                    fill_width=False,
+                    style_header = {'display': 'none'},
+                    style_cell={
+                        'backgroundColor': '#111111',
+                        'color': '#ffffff'
+                    },
+                    style_cell_conditional=[
+                        {
+                            'if': {'column_id': 'Col'},
+                            'width': '55px'
+                        },
+                        {
+                            'if': {'column_id': 'Description'},
+                            'padding-right': '10px',
+                            'padding-left': '10px',
+                            'text-align': 'left',
+                        },
+                    ],
+                    style_data_conditional=[
+                        {
+                            'if': {
+                                'row_index': 0, 
+                                'column_id': 'Col'
+                            },
+                            'backgroundColor': '#2E8B57',
+                        },
+                        {
+                            'if': {
+                                'row_index': 1, 
+                                'column_id': 'Col'
+                            },
+                            'backgroundColor': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'row_index': 2, 
+                                'column_id': 'Col'
+                            },
+                            'backgroundColor': '#C85F46',
+                        },
+                    ],
+                    style_table={
+                        'margin-bottom': '30px',
+                    },
+                )
+
+
+
 app.layout = dbc.Container([
                 dbc.Row([
                     dbc.Col(
@@ -184,6 +238,9 @@ app.layout = dbc.Container([
                     ),
                     dbc.Col(
                         main_table,
+                    ),
+                    dbc.Col(
+                        main_table_legend,
                     )]
                 )
             ])

@@ -61,7 +61,11 @@ def get_zone_explanation(zone_explanation_list):
     zone_explanation_legend = []
 
     for li in zone_explanation_list:
+
+        temp_list=[]
         if li:
-            zone_explanation_legend.append(li.text.strip())
+            temp_list.append("")
+            temp_list.append(li.text.strip())
+            zone_explanation_legend.append(temp_list)
 
     return zone_explanation_legend
