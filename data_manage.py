@@ -54,3 +54,14 @@ def get_body_rows(main_table_body):
         body_rows.append(cols)
 
     return body_rows
+
+
+def get_zone_explanation(zone_explanation_list):
+
+    zone_explanation_legend = []
+
+    for li in zone_explanation_list:
+        if li:
+            zone_explanation_legend.append(li.text.strip())
+
+    return zone_explanation_legend

@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from data_manage import get_head_row, get_tooltips_row, get_body_rows
+from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation
 
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
@@ -43,13 +43,21 @@ df.drop('YC', inplace=True, axis=1)
 df.drop('Cor', inplace=True, axis=1)
 
 
-
 data=df.to_dict("records")
 columns = [{"name": i, "id": i} for i in df.columns]
 columns[1].update({"presentation": "markdown"})
 
-
 tooltip_dict = dict(zip(head_row, tooltips_head_row))
+
+
+
+zone_explanation = soup.find ('ul', {'class':'zone-explanation'})
+zone_explanation_list = zone_explanation.find_all('li')
+
+zone_explanation_legend = get_zone_explanation(zone_explanation_list)
+
+
+# print(zone_explanation_legend)
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
