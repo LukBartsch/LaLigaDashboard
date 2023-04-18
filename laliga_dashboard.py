@@ -141,22 +141,22 @@ main_table = dash_table.DataTable(
                         },
                         {
                             'if': {
-                                'filter_query': '{Pos} >= 1 && {Pos} <= 4' ,
-                                'column_id': 'Pos'
+                                'filter_query': '{#} >= 1 && {#} <= 4' ,
+                                'column_id': '#'
                             },
                             'backgroundColor': '#2E8B57',
                         },
                         {
                             'if': {
-                                'filter_query': '{Pos} >= 5 && {Pos} <= 6' ,
-                                'column_id': 'Pos'
+                                'filter_query': '{#} >= 5 && {#} <= 6' ,
+                                'column_id': '#'
                             },
                             'backgroundColor': '#68AA80',
                         },
                         {
                             'if': {
-                                'filter_query': '{Pos} >= 18 && {Pos} <= 20' ,
-                                'column_id': 'Pos'
+                                'filter_query': '{#} >= 18 && {#} <= 20' ,
+                                'column_id': '#'
                             },
                             'backgroundColor': '#C85F46',
                         },
@@ -192,7 +192,7 @@ main_table_legend = dash_table.DataTable(
                     style_cell_conditional=[
                         {
                             'if': {'column_id': 'Col'},
-                            'width': '55px'
+                            'width': '40px'
                         },
                         {
                             'if': {'column_id': 'Description'},
