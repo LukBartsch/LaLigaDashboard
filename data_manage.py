@@ -10,7 +10,7 @@ def get_head_row(main_table_head):
         else:
             head_row.append('')
 
-    head_row[0]='Pos'
+    head_row[0]='#'
     head_row[1]='Logo'
     head_row[16]='YC'
     head_row[17]='Cor'
