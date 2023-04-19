@@ -13,6 +13,8 @@ response = requests.get(url)
 
 soup = BeautifulSoup(response.text, 'html.parser')
 
+table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
+
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).thead
 main_table_head = main_table.find_all ('th')
 
@@ -170,7 +172,7 @@ main_table = dash_table.DataTable(
                 )
 
 table_title = html.H2(
-                    "La Liga Table (Spain) - 2022/23",
+                    table_title,
                     style={
                         'text-align': 'center',
                         'marginLeft': 'auto',
