@@ -114,6 +114,11 @@ main_table = dash_table.DataTable(
                             'color': 'tomato',
                         },
                         {
+                            'if': {'column_id': 'Pts'},
+                            'fontWeight': 'bold',
+                            'color': '#E5B05E',
+                        },
+                        {
                             'if': {
                                 'filter_query': '{PPG} > 2',
                                 'column_id': 'PPG'
