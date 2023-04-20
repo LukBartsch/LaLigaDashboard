@@ -38,9 +38,8 @@ main_table_body = main_table.find_all('tr')
 body_rows = get_body_rows(main_table_body) 
 
 
-
-
 df = pd.DataFrame(body_rows, columns = head_row)
+
 df.drop('YC', inplace=True, axis=1)
 df.drop('Cor', inplace=True, axis=1)
 
@@ -48,6 +47,12 @@ df.drop('Cor', inplace=True, axis=1)
 data=df.to_dict("records")
 columns = [{"name": i, "id": i} for i in df.columns]
 columns[1].update({"presentation": "markdown"})
+columns[11].update({"name": "Last 5"})
+columns[12].update({"name": "Last 5"})
+columns[13].update({"name": "Last 5"})
+columns[14].update({"name": "Last 5"})
+columns[15].update({"name": "Last 5"})
+
 
 tooltip_dict = dict(zip(head_row, tooltips_head_row))
 
@@ -73,6 +78,7 @@ main_table = dash_table.DataTable(
                     tooltip_header=tooltip_dict,
                     export_headers='display',
                     fill_width=False,
+                    merge_duplicate_headers=True,
                     style_header={
                         'backgroundColor': 'rgb(30, 30, 30)',
                         'color': '#007eff',
