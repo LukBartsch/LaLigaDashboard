@@ -174,6 +174,111 @@ main_table = dash_table.DataTable(
                             'backgroundColor': '#C85F46',
                         },
                         {
+                            'if': {
+                                'filter_query': '{1} contains "W"',
+                                'column_id': '1'
+                            },
+                            'color': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{2} contains "W"',
+                                'column_id': '2'
+                            },
+                            'color': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{3} contains "W"',
+                                'column_id': '3'
+                            },
+                            'color': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{4} contains "W"',
+                                'column_id': '4'
+                            },
+                            'color': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{5} contains "W"',
+                                'column_id': '5'
+                            },
+                            'color': '#68AA80',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{1} contains "D"',
+                                'column_id': '1'
+                            },
+                            'color': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{2} contains "D"',
+                                'column_id': '2'
+                            },
+                            'color': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{3} contains "D"',
+                                'column_id': '3'
+                            },
+                            'color': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{4} contains "D"',
+                                'column_id': '4'
+                            },
+                            'color': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{5} contains "D"',
+                                'column_id': '5'
+                            },
+                            'color': '#E5B05E',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{1} contains "L"',
+                                'column_id': '1'
+                            },
+                            'color': '#BB5555',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{2} contains "L"',
+                                'column_id': '2'
+                            },
+                            'color': '#BB5555',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{3} contains "L"',
+                                'column_id': '3'
+                            },
+                            'color': '#BB5555',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{4} contains "L"',
+                                'column_id': '4'
+                            },
+                            'color': '#BB5555',
+                        },
+                        {
+                            'if': {
+                                'filter_query': '{5} contains "L"',
+                                'column_id': '5'
+                            },
+                            'color': '#BB5555',
+                        },
+                        {
                             'if': {'column_id': 'Logo'},
                             'padding-left': '16px',
                         }
