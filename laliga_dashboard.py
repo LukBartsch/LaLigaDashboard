@@ -122,7 +122,8 @@ main_table = dash_table.DataTable(
                         {
                             'if': {'column_id': 'Pts'},
                             'fontWeight': 'bold',
-                            'color': '#E5B05E',
+                            'outline': '1px solid white',
+                            'outline-offset': '-7px'
                         },
                         {
                             'if': {
