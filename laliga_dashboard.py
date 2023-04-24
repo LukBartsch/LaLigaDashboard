@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation
+from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, get_league_header, clean_list
 
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
@@ -67,6 +67,28 @@ df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
 legend_data=df_legend.to_dict("records")
 legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 
+
+
+league_header = soup.find ('div', {'class':'first cf'})
+league_header_img = league_header.find ('img', {'class':'teamCrest'}).get('src')
+league_logo= html.Img(src=league_header_img, 
+                      width="200", 
+                      height="200", 
+                      style={
+                        'marginTop': '40px'
+                      })
+
+
+league_header_first_col = league_header.find_all('div', {'class':'w35 fl'})
+league_header_first_col_list = get_league_header(league_header_first_col)
+
+# print(league_header_first_col_list)
+
+league_header_second_col = league_header.find_all('div', {'class':'fl'})
+league_header_second_col_list = get_league_header(league_header_second_col)
+league_header_second_col_list = clean_list(league_header_first_col_list, league_header_second_col_list)
+
+# print(league_header_second_col_list)
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -352,9 +374,10 @@ main_table_legend = dash_table.DataTable(
 
 app.layout = dbc.Container([
                 dbc.Row([
-                    dbc.Col(
+                    dbc.Col([
+                        league_logo,
                         table_title     
-                    ),
+                    ]),
                     dbc.Col(
                         main_table,
                     ),
