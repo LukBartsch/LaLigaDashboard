@@ -97,3 +97,25 @@ def get_zone_explanation(zone_explanation_list):
             zone_explanation_legend.append(temp_list)
 
     return zone_explanation_legend
+
+
+def get_league_header(league_header_divs):
+
+    league_header_list = []
+
+    for div in league_header_divs:
+        league_header_list.append(div.text.strip())
+    
+    return league_header_list
+
+
+def clean_list(first_col, second_col):
+
+    cleaned_list = []
+
+    for single_word in second_col:
+        if not single_word in first_col and single_word:
+            splited_word = single_word.split(" ", 1)[0]
+            cleaned_list.append(splited_word)
+
+    return cleaned_list
