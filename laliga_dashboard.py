@@ -91,6 +91,16 @@ league_header_second_col_list = clean_list(league_header_first_col_list, league_
 # print(league_header_second_col_list)
 
 
+df_league_header = pd.DataFrame(data = [league_header_first_col_list, league_header_second_col_list], columns=["1", "2", "3", "4", "5", "6"])
+df_league_header = df_league_header.transpose()
+df_league_header.columns=["1", "2"]
+league_header_data=df_league_header.to_dict("records")
+league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
+
+# .transpose()
+
+print(df_league_header)
+
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
@@ -370,12 +380,31 @@ main_table_legend = dash_table.DataTable(
                     },
                 )
 
+league_header = dash_table.DataTable(
+                    league_header_data, 
+                    league_header_columns,
+                    fill_width=False,
+                    style_header = {'display': 'none'},
+                    style_cell={
+                        'backgroundColor': '#111111',
+                        'color': '#ffffff'
+                    },
+                    style_cell_conditional=[
+                        {
+                            'if': {'column_id': ['1', '2']},
+                            'padding-right': '10px',
+                            'padding-left': '10px',
+                            'text-align': 'left',
+                        },
+                    ],
+                )
 
 
 app.layout = dbc.Container([
                 dbc.Row([
                     dbc.Col([
                         league_logo,
+                        league_header,
                         table_title     
                     ]),
                     dbc.Col(
