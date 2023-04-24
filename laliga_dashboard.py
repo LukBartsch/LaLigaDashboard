@@ -72,10 +72,10 @@ legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 league_header = soup.find ('div', {'class':'first cf'})
 league_header_img = league_header.find ('img', {'class':'teamCrest'}).get('src')
 league_logo= html.Img(src=league_header_img, 
-                      width="200", 
-                      height="200", 
+                      width="180", 
+                      height="180", 
                       style={
-                        'marginTop': '40px'
+                        'marginTop': '30px'
                       })
 
 
@@ -89,6 +89,13 @@ league_header_second_col_list = get_league_header(league_header_second_col)
 league_header_second_col_list = clean_list(league_header_first_col_list, league_header_second_col_list)
 
 # print(league_header_second_col_list)
+
+
+df_league_header = pd.DataFrame(data = [league_header_first_col_list, league_header_second_col_list], columns=["1", "2", "3", "4", "5", "6"])
+df_league_header = df_league_header.transpose()
+df_league_header.columns=["1", "2"]
+league_header_data=df_league_header.to_dict("records")
+league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -370,14 +377,50 @@ main_table_legend = dash_table.DataTable(
                     },
                 )
 
+league_header = dash_table.DataTable(
+                    league_header_data, 
+                    league_header_columns,
+                    fill_width=False,
+                    style_header = {'display': 'none'},
+                    style_cell={
+                        'backgroundColor': '#111111',
+                        'color': '#ffffff'
+                    },
+                    style_cell_conditional=[
+                        {
+                            'if': {'column_id': ['1', '2']},
+                            'padding-right': '10px',
+                            'padding-left': '10px',
+                            'text-align': 'left',
+                        },
+                        {
+                            'if': {'column_id': '2'},
+                            'color': '#007eff',
+                        },
+                    ],
+                )
 
 
 app.layout = dbc.Container([
                 dbc.Row([
-                    dbc.Col([
-                        league_logo,
+                    dbc.Col(
+                        dbc.Row([
+                            dbc.Col(
+                                league_logo,
+                                width=4
+                            ),
+                            dbc.Col(
+                                league_header
+                            )
+                        ])
+                    ),
+                    dbc.Col(
+                    )
+                ]),
+                dbc.Row([
+                    dbc.Col(
                         table_title     
-                    ]),
+                    ),
                     dbc.Col(
                         main_table,
                     ),
