@@ -72,10 +72,10 @@ legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 league_header = soup.find ('div', {'class':'first cf'})
 league_header_img = league_header.find ('img', {'class':'teamCrest'}).get('src')
 league_logo= html.Img(src=league_header_img, 
-                      width="200", 
-                      height="200", 
+                      width="180", 
+                      height="180", 
                       style={
-                        'marginTop': '40px'
+                        'marginTop': '30px'
                       })
 
 
@@ -97,9 +97,6 @@ df_league_header.columns=["1", "2"]
 league_header_data=df_league_header.to_dict("records")
 league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
-# .transpose()
-
-print(df_league_header)
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -396,17 +393,34 @@ league_header = dash_table.DataTable(
                             'padding-left': '10px',
                             'text-align': 'left',
                         },
+                        {
+                            'if': {'column_id': '2'},
+                            'color': '#007eff',
+                        },
                     ],
                 )
 
 
 app.layout = dbc.Container([
                 dbc.Row([
-                    dbc.Col([
-                        league_logo,
-                        league_header,
+                    dbc.Col(
+                        dbc.Row([
+                            dbc.Col(
+                                league_logo,
+                                width=4
+                            ),
+                            dbc.Col(
+                                league_header
+                            )
+                        ])
+                    ),
+                    dbc.Col(
+                    )
+                ]),
+                dbc.Row([
+                    dbc.Col(
                         table_title     
-                    ]),
+                    ),
                     dbc.Col(
                         main_table,
                     ),
