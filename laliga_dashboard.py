@@ -1,6 +1,6 @@
 import requests
 
-from dash import Dash, dash_table, html
+from dash import Dash, dash_table, html, dcc
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -96,6 +96,8 @@ df_league_header = df_league_header.transpose()
 df_league_header.columns=["1", "2"]
 league_header_data=df_league_header.to_dict("records")
 league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
+
+
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -401,20 +403,69 @@ league_header = dash_table.DataTable(
                 )
 
 
+tab_style = {
+        'backgroundColor': 'rgb(50, 50, 50)',
+        'color': '#ffffff'
+}
+
+tab_selected_style = {
+        'backgroundColor': '#111111',
+        'borderLeft': '2px solid #007eff',
+        'color': '#007eff',
+}
+
+
+tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test1', children=[
+                dcc.Tab(
+                    label='Overview', 
+                    value='test1',
+                    style=tab_style,
+                    selected_style=tab_selected_style),
+                dcc.Tab(
+                    label='League Stats', 
+                    value='test2',
+                    style=tab_style,
+                    selected_style=tab_selected_style),
+                dcc.Tab(
+                    label='Top scorers', 
+                    value='test3',
+                    style=tab_style,
+                    selected_style={
+                            'backgroundColor': '#111111',
+                            'borderLeft': '2px solid #007eff',
+                            'color': '#007eff',
+                    }),
+                dcc.Tab(
+                    label='Top assists', 
+                    value='test4',
+                    style=tab_style,
+                    selected_style=tab_selected_style),
+                dcc.Tab(
+                    label='Clean Sheets', 
+                    value='test5',
+                    style=tab_style,
+                    selected_style=tab_selected_style),
+            ],
+            style={
+                    'marginTop': '30px'
+            }),
+
+
 app.layout = dbc.Container([
                 dbc.Row([
                     dbc.Col(
                         dbc.Row([
                             dbc.Col(
                                 league_logo,
-                                width=4
                             ),
                             dbc.Col(
                                 league_header
                             )
-                        ])
+                        ]),
+                        width = 4
                     ),
                     dbc.Col(
+                        tabs_menu
                     )
                 ]),
                 dbc.Row([
