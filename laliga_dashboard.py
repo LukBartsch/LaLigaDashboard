@@ -98,8 +98,6 @@ league_header_data=df_league_header.to_dict("records")
 league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
 
-
-
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
@@ -329,7 +327,6 @@ table_title = html.H2(
                         'color': '#ffffff'
                     })
 
-
 main_table_legend = dash_table.DataTable(
                     legend_data, 
                     legend_columns,
@@ -413,7 +410,6 @@ tab_selected_style = {
         'borderLeft': '2px solid #007eff',
         'color': '#007eff',
 }
-
 
 tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test1', children=[
                 dcc.Tab(
