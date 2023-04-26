@@ -398,8 +398,14 @@ league_header = dash_table.DataTable(
                         {
                             'if': {'column_id': '2'},
                             'color': '#007eff',
-                        },
+                        }
                     ],
+                    style_data_conditional=[
+                        {
+                            'if': {'row_index': 'odd'},
+                            'backgroundColor': 'rgb(30, 30, 30)',
+                        }
+                    ]
                 )
 
 
