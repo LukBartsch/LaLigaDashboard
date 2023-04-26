@@ -1,6 +1,6 @@
+from bs4 import BeautifulSoup
 
-
-def get_head_row(main_table_head):
+def get_head_row(main_table_head: BeautifulSoup) -> list:
 
     head_row=[]
 
@@ -19,12 +19,11 @@ def get_head_row(main_table_head):
     head_row[20]='YC'
     head_row[21]='Cor'
 
-    
     return head_row
 
 
 
-def get_tooltips_row(main_table_head):
+def get_tooltips_row(main_table_head: BeautifulSoup) -> list:
     
     tooltips_head_row = []
 
@@ -46,7 +45,7 @@ def get_tooltips_row(main_table_head):
 
 
 
-def get_body_rows(main_table_body):
+def get_body_rows(main_table_body: BeautifulSoup) -> list:
 
     body_rows = []
 
@@ -67,7 +66,7 @@ def get_body_rows(main_table_body):
     return body_rows
 
 
-def split_last_five_games(cols):
+def split_last_five_games(cols: list) -> list:
 
     raw_matches_list = list(cols[11])
     matches_list = []
@@ -84,7 +83,7 @@ def split_last_five_games(cols):
 
     return cols
 
-def get_zone_explanation(zone_explanation_list):
+def get_zone_explanation(zone_explanation_list: BeautifulSoup) -> list:
 
     zone_explanation_legend = []
 
@@ -99,7 +98,7 @@ def get_zone_explanation(zone_explanation_list):
     return zone_explanation_legend
 
 
-def get_league_header(league_header_divs):
+def get_league_header(league_header_divs: BeautifulSoup) -> list:
 
     league_header_list = []
 
@@ -109,7 +108,7 @@ def get_league_header(league_header_divs):
     return league_header_list
 
 
-def clean_list(first_col, second_col):
+def clean_list(first_col: list, second_col: list) -> list:
 
     cleaned_list = []
 
