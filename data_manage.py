@@ -1,6 +1,18 @@
 from bs4 import BeautifulSoup
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
+    """Get data for table header
+
+    Parameters
+    ----------
+    main_table_head : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for table header
+    """    
 
     head_row=[]
 
