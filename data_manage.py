@@ -1,6 +1,18 @@
 from bs4 import BeautifulSoup
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
+    """Get data for table header
+
+    Parameters
+    ----------
+    main_table_head : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for table header
+    """    
 
     head_row=[]
 
@@ -24,7 +36,19 @@ def get_head_row(main_table_head: BeautifulSoup) -> list:
 
 
 def get_tooltips_row(main_table_head: BeautifulSoup) -> list:
-    
+    """Get data for table tooltips header
+
+    Parameters
+    ----------
+    main_table_head : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for table tooltips header
+    """    
+
     tooltips_head_row = []
 
     for th in main_table_head:
@@ -46,6 +70,18 @@ def get_tooltips_row(main_table_head: BeautifulSoup) -> list:
 
 
 def get_body_rows(main_table_body: BeautifulSoup) -> list:
+    """Get data for table body
+
+    Parameters
+    ----------
+    main_table_body : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for table body
+    """    
 
     body_rows = []
 
@@ -67,6 +103,18 @@ def get_body_rows(main_table_body: BeautifulSoup) -> list:
 
 
 def split_last_five_games(cols: list) -> list:
+    """Split and clean five last matches scores to single items
+
+    Parameters
+    ----------
+    cols : list
+        Raw list of last five matches scores 
+
+    Returns
+    -------
+    list
+        Clean list of last five last matches scores
+    """    
 
     raw_matches_list = list(cols[11])
     matches_list = []
@@ -83,7 +131,20 @@ def split_last_five_games(cols: list) -> list:
 
     return cols
 
+
 def get_zone_explanation(zone_explanation_list: BeautifulSoup) -> list:
+    """Get legend data for main table
+
+    Parameters
+    ----------
+    zone_explanation_list : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for table legend
+    """
 
     zone_explanation_legend = []
 
@@ -99,6 +160,18 @@ def get_zone_explanation(zone_explanation_list: BeautifulSoup) -> list:
 
 
 def get_league_header(league_header_divs: BeautifulSoup) -> list:
+    """Get data for league header
+
+    Parameters
+    ----------
+    league_header_divs : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data for league header
+    """
 
     league_header_list = []
 
@@ -109,6 +182,20 @@ def get_league_header(league_header_divs: BeautifulSoup) -> list:
 
 
 def clean_list(first_col: list, second_col: list) -> list:
+    """Clean data for league header and remove duplicate elements
+
+    Parameters
+    ----------
+    first_col : list
+        League header - first column
+    second_col : list
+        League header - second column
+
+    Returns
+    -------
+    list
+        Clean second column for league header
+    """
 
     cleaned_list = []
 
