@@ -117,10 +117,15 @@ def split_last_five_games(cols: list) -> list:
     """    
 
     raw_matches_list = list(cols[11])
+
     matches_list = []
-    for single_match in raw_matches_list:
-        if single_match != "\n":
-            matches_list.append(single_match)
+
+    if raw_matches_list != []:
+        for single_match in raw_matches_list:
+            if single_match != "\n":
+                matches_list.append(single_match)
+    else:
+        matches_list = ["","","","",""]
 
     matches_list.reverse()
 
