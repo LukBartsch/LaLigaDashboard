@@ -31,11 +31,14 @@ tooltips_head_row = get_tooltips_row(main_table_head)
 # print(len(tooltips_head_row))
 
 
-
 main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).tbody
 main_table_body = main_table.find_all('tr')
 
-body_rows = get_body_rows(main_table_body) 
+body_rows = get_body_rows(main_table_body)
+
+
+# print(body_rows[0])
+# print(len(body_rows))
 
 
 df = pd.DataFrame(body_rows, columns = head_row)
