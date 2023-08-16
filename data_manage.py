@@ -127,6 +127,9 @@ def split_last_five_games(cols: list) -> list:
     else:
         matches_list = ["","","","",""]
 
+    while len(matches_list) < 5:
+        matches_list.append("")
+
     matches_list.reverse()
 
     del cols[11]
