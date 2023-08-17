@@ -9,7 +9,19 @@ from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_
 
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
+
+file_path = 'static\stats\laliga_stats_22_23.txt'
+
 response = requests.get(url)
+
+with open(file_path, encoding="utf8") as f:
+    contents = f.read()
+    # print(contents)
+
+
+soup2 = BeautifulSoup(contents, 'html.parser')
+table_title2 = soup2.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
+print(table_title2)
 
 soup = BeautifulSoup(response.text, 'html.parser')
 
