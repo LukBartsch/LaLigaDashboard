@@ -1,4 +1,26 @@
+import glob
+import pathlib
+import os
+
 from bs4 import BeautifulSoup
+
+
+def set_files_list():
+
+    path = str(pathlib.Path(__file__).parent.resolve())
+    files_path = path + "\static\stats"
+
+    raw_all_files = glob.glob(files_path + "/*.txt")
+
+    all_files = ['Current season']
+
+    for file in raw_all_files:
+        head, tail = os.path.split(file)
+        all_files.append(tail)
+
+    return all_files
+
+
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
     """Get data for table header

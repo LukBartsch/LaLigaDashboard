@@ -1,25 +1,26 @@
 import requests
-import glob
-import pathlib
-import os
+# import glob
+# import pathlib
+# import os
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, get_league_header, clean_list
+from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
+                        get_league_header, clean_list
 
-path = str(pathlib.Path(__file__).parent.resolve())
-files_path = path + "\static\stats"
+# path = str(pathlib.Path(__file__).parent.resolve())
+# files_path = path + "\static\stats"
 
-raw_all_files = glob.glob(files_path + "/*.txt")
+# raw_all_files = glob.glob(files_path + "/*.txt")
 
-all_files = []
+# all_files = []
 
-for file in raw_all_files:
-    head, tail = os.path.split(file)
-    all_files.append(tail)
+# for file in raw_all_files:
+#     head, tail = os.path.split(file)
+#     all_files.append(tail)
 
 # print(all_files)
 
@@ -494,8 +495,8 @@ app.layout = dbc.Container([
                 dbc.Row([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
-                        options = all_files,
-                        value = all_files[0] if all_files else None,
+                        options = set_files_list(),
+                        value = set_files_list()[0] if set_files_list() else None,
                         clearable = False,
                         style = {
                             'marginTop': '20px',
