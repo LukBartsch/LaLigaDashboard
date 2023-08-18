@@ -1,4 +1,7 @@
 import requests
+import glob
+import pathlib
+import os
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -7,6 +10,19 @@ import pandas as pd
 
 from data_manage import get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, get_league_header, clean_list
 
+path = str(pathlib.Path(__file__).parent.resolve())
+files_path = path + "\static\stats"
+
+raw_all_files = glob.glob(files_path + "/*.txt")
+
+all_files = []
+
+for file in raw_all_files:
+    head, tail = os.path.split(file)
+    all_files.append(tail)
+
+# print(all_files)
+
 
 url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
 
@@ -14,16 +30,16 @@ file_path = 'static\stats\laliga_stats_22_23.txt'
 
 response = requests.get(url)
 
-with open(file_path, encoding="utf8") as f:
-    contents = f.read()
+# with open(file_path, encoding="utf8") as f:
+#     contents = f.read()
 
 
-soup2 = BeautifulSoup(contents, 'html.parser')
-table_title2 = soup2.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
-print(table_title2)
+# soup2 = BeautifulSoup(contents, 'html.parser')
+# table_title2 = soup2.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
+# print(table_title2)
 
-# soup = BeautifulSoup(response.text, 'html.parser')
-soup = BeautifulSoup(contents, 'html.parser')
+soup = BeautifulSoup(response.text, 'html.parser')
+# soup = BeautifulSoup(contents, 'html.parser')
 
 table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
 
@@ -478,10 +494,10 @@ app.layout = dbc.Container([
                 dbc.Row([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
-                        options = ['New York City', 'Montreal', 'San Francisco'],
-                        value= 'Montreal',
-                        clearable=False,
-                        style={
+                        options = all_files,
+                        value = all_files[0] if all_files else None,
+                        clearable = False,
+                        style = {
                             'marginTop': '20px',
                         }
                     ),
