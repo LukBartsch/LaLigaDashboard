@@ -1,6 +1,6 @@
 import requests
 
-from dash import Dash, dash_table, html, dcc
+from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -16,14 +16,14 @@ response = requests.get(url)
 
 with open(file_path, encoding="utf8") as f:
     contents = f.read()
-    # print(contents)
 
 
 soup2 = BeautifulSoup(contents, 'html.parser')
 table_title2 = soup2.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
 print(table_title2)
 
-soup = BeautifulSoup(response.text, 'html.parser')
+# soup = BeautifulSoup(response.text, 'html.parser')
+soup = BeautifulSoup(contents, 'html.parser')
 
 table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
 
@@ -473,6 +473,22 @@ tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test1', children=[
 
 
 app.layout = dbc.Container([
+
+
+                dbc.Row([
+                    dcc.Dropdown(
+                        id = 'select-season-dropdown',
+                        options = ['New York City', 'Montreal', 'San Francisco'],
+                        value= 'Montreal',
+                        clearable=False,
+                        style={
+                            'marginTop': '20px',
+                        }
+                    ),
+                    dbc.Col(
+                        html.H6(id='dropdown-output', style={'color': '#ffffff'}),
+                    ),
+                ]),
                 dbc.Row([
                     dbc.Col(
                         dbc.Row([
@@ -501,6 +517,17 @@ app.layout = dbc.Container([
                     )]
                 )
             ])
+
+
+
+@callback(
+    Output('dropdown-output', 'children'),
+    Input('select-season-dropdown', 'value')
+)
+def update_season(value):
+    return f'Output: {value}'
+
+
 
 server = app.server
 
