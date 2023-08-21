@@ -18,6 +18,7 @@ def set_files_list() -> list:
     files_path = path + "\static\stats"
 
     raw_all_files = glob.glob(files_path + "/*.txt")
+    raw_all_files.sort(reverse=True)
 
     all_files_keys = ['Current season']
     all_files_value = ['Current season']
