@@ -8,3 +8,20 @@ body {
 img[src*="#thumbnail"] {
     width:30px;
  }
+
+
+.Select-control {
+  background-color: rgb(25, 25, 25) !important;
+  color:white;
+}  
+
+
+.Select-value-label {
+  color: #007eff !important;
+}
+
+
+.Select-menu-outer {
+  background-color: rgb(25, 25, 25);
+  color: white;
+} 
