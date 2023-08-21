@@ -170,34 +170,39 @@ def update_season(value):
     legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 
 
-
-    league_header = soup.find ('div', {'class':'first cf'})
-    league_header_img = league_header.find ('img', {'class':'teamCrest'}).get('src')
-    league_logo= html.Img(src=league_header_img, 
-                        width="180", 
-                        height="180", 
-                        style={
-                            'marginTop': '30px'
-                        })
-
-
-    league_header_first_col = league_header.find_all('div', {'class':'w35 fl'})
-    league_header_first_col_list = get_league_header(league_header_first_col)
-
-    # print(league_header_first_col_list)
-
-    league_header_second_col = league_header.find_all('div', {'class':'fl'})
-    league_header_second_col_list = get_league_header(league_header_second_col)
-    league_header_second_col_list = clean_list(league_header_first_col_list, league_header_second_col_list)
-
-    # print(league_header_second_col_list)
+    try: 
+        league_header = soup.find ('div', {'class':'first cf'})
+        league_header_img = league_header.find ('img', {'class':'teamCrest'}).get('src')
+        league_logo= html.Img(src=league_header_img, 
+                            width="180", 
+                            height="180", 
+                            style={
+                                'marginTop': '30px'
+                            })
 
 
-    df_league_header = pd.DataFrame(data = [league_header_first_col_list, league_header_second_col_list], columns=["1", "2", "3", "4", "5", "6"])
-    df_league_header = df_league_header.transpose()
-    df_league_header.columns=["1", "2"]
-    league_header_data=df_league_header.to_dict("records")
-    league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
+        league_header_first_col = league_header.find_all('div', {'class':'w35 fl'})
+        league_header_first_col_list = get_league_header(league_header_first_col)
+
+        # print(league_header_first_col_list)
+
+        league_header_second_col = league_header.find_all('div', {'class':'fl'})
+        league_header_second_col_list = get_league_header(league_header_second_col)
+        league_header_second_col_list = clean_list(league_header_first_col_list, league_header_second_col_list)
+
+        # print(league_header_second_col_list)
+
+
+        df_league_header = pd.DataFrame(data = [league_header_first_col_list, league_header_second_col_list], columns=["1", "2", "3", "4", "5", "6"])
+        df_league_header = df_league_header.transpose()
+        df_league_header.columns=["1", "2"]
+        league_header_data=df_league_header.to_dict("records")
+        league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
+
+    except:
+        df_league_header = pd.DataFrame()
+        league_header_data=df_league_header.to_dict("records")
+        league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
 
 
