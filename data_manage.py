@@ -12,13 +12,21 @@ def set_files_list():
 
     raw_all_files = glob.glob(files_path + "/*.txt")
 
-    all_files = ['Current season']
+    all_files_keys = ['Current season']
+    all_files_value = ['Current season']
 
     for file in raw_all_files:
         head, tail = os.path.split(file)
-        all_files.append(tail)
+        all_files_keys.append(tail)
 
-    return all_files
+        season_number = str(tail)[-9:-4]
+        splited_season_number = season_number.split("_")
+        all_files_value.append("Season " + splited_season_number[0] + "/" + splited_season_number[1])
+        
+    all_files_pairs = zip(all_files_keys, all_files_value)
+    all_files_dict = dict(all_files_pairs)
+
+    return all_files_dict
 
 
 

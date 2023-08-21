@@ -46,7 +46,7 @@ app.layout = dbc.Container([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
                         options = set_files_list(),
-                        value = set_files_list()[0] if set_files_list() else None,
+                        value = "Current season",
                         clearable = False,
                         style = {
                             'marginTop': '20px',
