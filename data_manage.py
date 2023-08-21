@@ -5,7 +5,14 @@ import os
 from bs4 import BeautifulSoup
 
 
-def set_files_list():
+def set_files_list() -> list:
+    """Get list of all files in static\stats folder
+
+    Returns
+    -------
+    list
+        List of all files in static\stats folder
+    """
 
     path = str(pathlib.Path(__file__).parent.resolve())
     files_path = path + "\static\stats"
@@ -19,7 +26,6 @@ def set_files_list():
         all_files.append(tail)
 
     return all_files
-
 
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
@@ -56,7 +62,6 @@ def get_head_row(main_table_head: BeautifulSoup) -> list:
     return head_row
 
 
-
 def get_tooltips_row(main_table_head: BeautifulSoup) -> list:
     """Get data for table tooltips header
 
@@ -88,7 +93,6 @@ def get_tooltips_row(main_table_head: BeautifulSoup) -> list:
     del tooltips_head_row[17]
 
     return tooltips_head_row
-
 
 
 def get_body_rows(main_table_body: BeautifulSoup) -> list:
