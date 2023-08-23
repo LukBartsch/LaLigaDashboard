@@ -73,8 +73,12 @@ app.layout = dbc.Container([
                     dbc.Col(
                         id='table-title',    
                     ),
-                    dbc.Col(
-                        id='main-table',
+                    dbc.Spinner(
+                        dbc.Col(
+                            id='main-table',
+                        ),
+                        color="primary",
+                        spinner_style={"width": "3rem", "height": "3rem", "marginTop": "150px"}
                     ),
                     dbc.Col(
                         id='main-table-legend',
