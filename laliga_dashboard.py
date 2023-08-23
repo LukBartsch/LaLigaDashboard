@@ -121,14 +121,20 @@ def update_season(value):
     main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).thead
     main_table_head = main_table.find_all ('th')
 
+    try:
+        head_row = get_head_row(main_table_head)
+    except:
+        head_row = []
 
-    head_row = get_head_row(main_table_head)
 
     # print(head_row)
     # print(len(head_row))
 
+    try:
+        tooltips_head_row = get_tooltips_row(main_table_head)
+    except:
+        tooltips_head_row = []
 
-    tooltips_head_row = get_tooltips_row(main_table_head)
 
     # print(tooltips_head_row)
     # print(len(tooltips_head_row))
@@ -137,41 +143,55 @@ def update_season(value):
     main_table = soup.find ('table', {'class':'full-league-table table-sort col-sm-12 mobify-table'}).tbody
     main_table_body = main_table.find_all('tr')
 
-    body_rows = get_body_rows(main_table_body)
-
+    try:
+        body_rows = get_body_rows(main_table_body)
+    except:
+        body_rows = []
 
     # print(body_rows[0])
     # print(len(body_rows))
 
+    try:
+        df = pd.DataFrame(body_rows, columns = head_row)
 
-    df = pd.DataFrame(body_rows, columns = head_row)
-
-    df.drop('YC', inplace=True, axis=1)
-    df.drop('Cor', inplace=True, axis=1)
-
-
-    data=df.to_dict("records")
-    columns = [{"name": i, "id": i} for i in df.columns]
-    columns[1].update({"presentation": "markdown"})
-    columns[11].update({"name": "Last 5"})
-    columns[12].update({"name": "Last 5"})
-    columns[13].update({"name": "Last 5"})
-    columns[14].update({"name": "Last 5"})
-    columns[15].update({"name": "Last 5"})
+        df.drop('YC', inplace=True, axis=1)
+        df.drop('Cor', inplace=True, axis=1)
 
 
-    tooltip_dict = dict(zip(head_row, tooltips_head_row))
+        data=df.to_dict("records")
+        columns = [{"name": i, "id": i} for i in df.columns]
+        columns[1].update({"presentation": "markdown"})
+        columns[11].update({"name": "Last 5"})
+        columns[12].update({"name": "Last 5"})
+        columns[13].update({"name": "Last 5"})
+        columns[14].update({"name": "Last 5"})
+        columns[15].update({"name": "Last 5"})
+
+        tooltip_dict = dict(zip(head_row, tooltips_head_row))
+
+    except:
+        df = pd.DataFrame()
+        data=df.to_dict("records")
+        columns = [{"name": i, "id": i} for i in df.columns]
+        tooltip_dict = dict(zip(head_row, tooltips_head_row))
 
 
 
     zone_explanation = soup.find ('ul', {'class':'zone-explanation'})
     zone_explanation_list = zone_explanation.find_all('li')
 
-    main_table_legend = get_zone_explanation(zone_explanation_list)
+    try:
+        main_table_legend = get_zone_explanation(zone_explanation_list)
 
-    df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
-    legend_data=df_legend.to_dict("records")
-    legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
+        df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
+        legend_data=df_legend.to_dict("records")
+        legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
+
+    except:
+        main_table_legend = []
+        df_legend = pd.DataFrame()
+        legend_data=df_legend.to_dict("records")
+        legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
 
 
     try: 
