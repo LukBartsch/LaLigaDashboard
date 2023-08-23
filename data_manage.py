@@ -6,13 +6,13 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def set_files_list() -> list:
+def set_files_list() -> dict:
     """Get list of all files in static\stats folder
 
     Returns
     -------
-    list
-        List of all files in static\stats folder
+    dict
+        Dictionary with all files in static\stats folder
     """
 
     path = str(pathlib.Path(__file__).parent.resolve())
@@ -42,7 +42,14 @@ def set_files_list() -> list:
     return all_files_dict
 
 
-def get_current_season_number():
+def get_current_season_number() -> str:
+    """Get current season number from website
+
+    Returns
+    -------
+    str
+        Current season number (string)
+    """
 
     url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
     response = requests.get(url)
