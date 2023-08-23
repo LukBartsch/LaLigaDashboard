@@ -1,6 +1,7 @@
 import glob
 import pathlib
 import os
+import requests
 
 from bs4 import BeautifulSoup
 
@@ -20,8 +21,12 @@ def set_files_list() -> list:
     raw_all_files = glob.glob(files_path + "/*.txt")
     raw_all_files.sort(reverse=True)
 
-    all_files_keys = ['Current season']
-    all_files_value = ['Current season']
+    current_season = get_current_season_number()
+    current_season_label = "Season " + str(current_season) + " (Current season)"
+    
+
+    all_files_keys = ["Current season"]
+    all_files_value = [current_season_label]
 
     for file in raw_all_files:
         head, tail = os.path.split(file)
@@ -35,6 +40,18 @@ def set_files_list() -> list:
     all_files_dict = dict(all_files_pairs)
 
     return all_files_dict
+
+
+def get_current_season_number():
+
+    url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
+    table_title = table_title[-5:]
+
+    return table_title
 
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
