@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
-                        get_league_header, clean_list
+                        get_league_header, clean_list, set_legend_colors, set_main_table_position_colors
 
 
 
@@ -183,6 +183,9 @@ def update_season(value):
     try:
         main_table_legend = get_zone_explanation(zone_explanation_list)
 
+        legend_colors = set_legend_colors(len(main_table_legend))
+        champions_league_colors, europa_league_colors, europa_league_qualifiers_colors, relegation_colors = set_main_table_position_colors(len(main_table_legend), value)
+
         df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
         legend_data=df_legend.to_dict("records")
         legend_columns = [{"name": i, "id": i} for i in df_legend.columns]
@@ -233,8 +236,7 @@ def update_season(value):
         league_header_data=df_league_header.to_dict("records")
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
-    except Exception as e:
-        print(e)
+    except:
         df_league_header = pd.DataFrame()
         league_header_data=df_league_header.to_dict("records")
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
@@ -324,27 +326,10 @@ def update_season(value):
                                 },
                                 'backgroundColor': '#C85F46',
                             },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 1 && {#} <= 4' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#2E8B57',
-                            },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 5 && {#} <= 6' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#68AA80',
-                            },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 18 && {#} <= 20' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#C85F46',
-                            },
+                            champions_league_colors,
+                            europa_league_colors,
+                            europa_league_qualifiers_colors,
+                            relegation_colors,
                             {
                                 'if': {
                                     'filter_query': '{1} contains "W"',
@@ -490,29 +475,7 @@ def update_season(value):
                                 'text-align': 'left',
                             },
                         ],
-                        style_data_conditional=[
-                            {
-                                'if': {
-                                    'row_index': 0, 
-                                    'column_id': 'Col'
-                                },
-                                'backgroundColor': '#2E8B57',
-                            },
-                            {
-                                'if': {
-                                    'row_index': 1, 
-                                    'column_id': 'Col'
-                                },
-                                'backgroundColor': '#68AA80',
-                            },
-                            {
-                                'if': {
-                                    'row_index': 2, 
-                                    'column_id': 'Col'
-                                },
-                                'backgroundColor': '#C85F46',
-                            },
-                        ],
+                        style_data_conditional = legend_colors,
                         style_table={
                             'margin-bottom': '30px',
                         },
