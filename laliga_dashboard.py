@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
-                        get_league_header, clean_list, set_legend_colors
+                        get_league_header, clean_list, set_legend_colors, set_main_table_position_colors
 
 
 
@@ -184,6 +184,7 @@ def update_season(value):
         main_table_legend = get_zone_explanation(zone_explanation_list)
 
         legend_colors = set_legend_colors(len(main_table_legend))
+        champions_league_colors, europa_league_colors, europa_league_qualifiers_colors, relegation_colors = set_main_table_position_colors(len(main_table_legend), value)
 
         df_legend = pd.DataFrame(main_table_legend, columns=["Col", "Description"])
         legend_data=df_legend.to_dict("records")
@@ -325,27 +326,10 @@ def update_season(value):
                                 },
                                 'backgroundColor': '#C85F46',
                             },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 1 && {#} <= 4' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#2E8B57',
-                            },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 5 && {#} <= 6' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#68AA80',
-                            },
-                            {
-                                'if': {
-                                    'filter_query': '{#} >= 18 && {#} <= 20' ,
-                                    'column_id': '#'
-                                },
-                                'backgroundColor': '#C85F46',
-                            },
+                            champions_league_colors,
+                            europa_league_colors,
+                            europa_league_qualifiers_colors,
+                            relegation_colors,
                             {
                                 'if': {
                                     'filter_query': '{1} contains "W"',

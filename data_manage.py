@@ -299,6 +299,109 @@ def set_legend_colors(len_of_legend: int) -> list:
     return legend_colors
 
 
+def set_main_table_position_colors(len_of_legend: int, season_number: str) -> dict:
+    """Set colors for main table positions
+
+    Parameters
+    ----------
+    len_of_legend : int
+        Number of legend elements
+    season_number : str
+        Season number
+
+    Returns
+    -------
+    dict
+        Four dictionarys with colors for main table positions
+    """
+
+    if len_of_legend == 3:
+        champions_league_colors = {
+            'if': {
+                'filter_query': '{#} >= 1 && {#} <= 4' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#2E8B57',
+        }
+        europa_league_colors = {
+            'if': {
+                'filter_query': '{#} >= 5 && {#} <= 6' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#68AA80',
+        }
+        europa_league_qualifiers_colors = {}
+        relegation_colors = {
+            'if': {
+                'filter_query': '{#} >= 18 && {#} <= 20' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#C85F46',
+        }
+
+    elif len_of_legend == 4 and ('20_21' in season_number or '19_20' in season_number):
+        champions_league_colors = {
+            'if': {
+                'filter_query': '{#} >= 1 && {#} <= 4' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#2E8B57',
+        }
+        europa_league_colors = {
+            'if': {
+                'filter_query': '{#} = 5' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#68AA80',
+        }
+        europa_league_qualifiers_colors = {
+            'if': {
+                'filter_query': '{#} = 6' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#629fd5',
+        }
+        relegation_colors = {
+            'if': {
+                'filter_query': '{#} >= 18 && {#} <= 20' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#C85F46',
+        }
+    else:
+        champions_league_colors = {
+            'if': {
+                'filter_query': '{#} >= 1 && {#} <= 3' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#2E8B57',
+        }
+        europa_league_colors = {
+            'if': {
+                'filter_query': '{#} = 4' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#68AA80',
+        }
+        europa_league_qualifiers_colors = {
+            'if': {
+                'filter_query': '{#} >= 5 && {#} <= 6' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#629fd5',
+        }
+        relegation_colors = {
+            'if': {
+                'filter_query': '{#} >= 18 && {#} <= 20' ,
+                'column_id': '#'
+            },
+            'backgroundColor': '#C85F46',
+        }
+
+    return champions_league_colors, europa_league_colors, europa_league_qualifiers_colors, relegation_colors
+
+
+
 def get_league_header(league_header_divs: BeautifulSoup) -> list:
     """Get data for league header
 
