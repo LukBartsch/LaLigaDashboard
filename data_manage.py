@@ -226,6 +226,79 @@ def get_zone_explanation(zone_explanation_list: BeautifulSoup) -> list:
     return zone_explanation_legend
 
 
+def set_legend_colors(len_of_legend: int) -> list:
+    """Set colors for table legend
+
+    Parameters
+    ----------
+    len_of_legend : int
+        Number of legend elements
+
+    Returns
+    -------
+    list
+        List of colors for table legend
+    """
+
+    if len_of_legend == 3:
+        legend_colors=[
+            {
+                'if': {
+                    'row_index': 0, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#2E8B57',
+            },
+            {
+                'if': {
+                    'row_index': 1, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#68AA80',
+            },
+            {
+                'if': {
+                    'row_index': 2, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#C85F46',
+            },
+        ]
+    else:
+        legend_colors=[
+            {
+                'if': {
+                    'row_index': 0, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#2E8B57',
+            },
+            {
+                'if': {
+                    'row_index': 1, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#68AA80',
+            },
+            {
+                'if': {
+                    'row_index': 2, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#629fd5',
+            },
+            {
+                'if': {
+                    'row_index': 3, 
+                    'column_id': 'Col'
+                },
+                'backgroundColor': '#C85F46',
+            },
+        ]
+
+    return legend_colors
+
+
 def get_league_header(league_header_divs: BeautifulSoup) -> list:
     """Get data for league header
 
