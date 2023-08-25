@@ -217,13 +217,24 @@ def update_season(value):
         # print(league_header_second_col_list)
 
 
+        if len(league_header_first_col_list) > 6:
+            league_header_first_col_list = league_header_first_col_list[:6]
+            league_header_second_col_list[5] = '100%'
+
+        if len(league_header_second_col_list) > 6:
+            league_header_second_col_list = league_header_second_col_list[:6]
+            league_header_second_col_list[5] = '100%'
+
+
         df_league_header = pd.DataFrame(data = [league_header_first_col_list, league_header_second_col_list], columns=["1", "2", "3", "4", "5", "6"])
+
         df_league_header = df_league_header.transpose()
         df_league_header.columns=["1", "2"]
         league_header_data=df_league_header.to_dict("records")
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
-    except:
+    except Exception as e:
+        print(e)
         df_league_header = pd.DataFrame()
         league_header_data=df_league_header.to_dict("records")
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
