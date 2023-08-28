@@ -16,13 +16,17 @@ from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body
 
 tab_style = {
         'backgroundColor': 'rgb(50, 50, 50)',
-        'color': '#ffffff'
+        'color': '#ffffff',
+        'height': '58px',
+        'padding': '15px',
 }
 
 tab_selected_style = {
         'backgroundColor': '#111111',
         'borderLeft': '2px solid #007eff',
         'color': '#007eff',
+        'height': '58px',
+        'padding': '15px',
 }
 
 
@@ -242,7 +246,45 @@ def update_season(value):
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
 
 
+    stats_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
 
+    parameters=['35min/Goal', '61% Clean Sheets', '50% Both Teams Scored']
+    values=['72 Goals in 28 matches', '17 times out of 28 matches', '14 times out of 28 matches']
+
+    df_stats = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+
+    data_stats=df_stats.to_dict("records")
+
+
+
+
+    overview_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
+
+    parameters=['2.57', '47%', '53%']
+    values=['Goals / Match', 'First half', 'Second half']
+
+    df_overview = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    data_overview=df_overview.to_dict("records")
 
 
     main_table = dash_table.DataTable(
@@ -510,27 +552,84 @@ def update_season(value):
                         ]
                     )
 
+    overview_table = dash_table.DataTable(
+                        data_overview,
+                        overview_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Parameter'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
 
-    tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test1', children=[
-                    dcc.Tab(
-                        label='Overview', 
-                        value='test1',
-                        style=tab_style,
-                        selected_style=tab_selected_style),
+
+    stats_table = dash_table.DataTable(
+                        data_stats,
+                        stats_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Parameter'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+
+    tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test2', children=[
                     dcc.Tab(
                         label='League Stats', 
                         value='test2',
                         style=tab_style,
-                        selected_style=tab_selected_style),
+                        selected_style=tab_selected_style,
+                        children=[
+                            dbc.Row([
+                                dbc.Col(
+                                    overview_table
+                                ),
+                                dbc.Col(
+                                    stats_table
+                                )
+                            ]),
+                        ]),
                     dcc.Tab(
                         label='Top scorers', 
                         value='test3',
                         style=tab_style,
-                        selected_style={
-                                'backgroundColor': '#111111',
-                                'borderLeft': '2px solid #007eff',
-                                'color': '#007eff',
-                        }),
+                        selected_style=tab_selected_style),
                     dcc.Tab(
                         label='Top assists', 
                         value='test4',
