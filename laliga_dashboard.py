@@ -9,7 +9,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
-                        get_league_header, clean_list, set_legend_colors, set_main_table_position_colors
+                        get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
+                        get_lists_with_top_players
 
 
 
@@ -244,6 +245,24 @@ def update_season(value):
         df_league_header = pd.DataFrame()
         league_header_data=df_league_header.to_dict("records")
         league_header_columns = [{"name": i, "id": i} for i in df_league_header.columns]
+
+
+    
+
+    try:
+
+        top_scorers = soup.find_all('div', {'class':'w90 m0Auto pb1e'})
+        #  print(top_scorers)
+
+        top_scorers_name_list, top_scorers_goals_list = get_lists_with_top_players(top_scorers[0])
+
+
+        print(top_scorers_name_list)
+        print(top_scorers_goals_list)
+
+
+    except Exception as e:
+        print(e)
 
 
     stats_columns = [

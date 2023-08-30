@@ -448,3 +448,32 @@ def clean_list(first_col: list, second_col: list) -> list:
             cleaned_list.append(splited_word)
 
     return cleaned_list
+
+
+def get_lists_with_top_players(top_players: BeautifulSoup) -> list:
+    """Get list with top players
+
+    Parameters
+    ----------
+    top_players : BeautifulSoup
+        BeautifulSoup object with data from website 
+
+    Returns
+    -------
+    list
+        Clean data with info about top players
+    """
+
+    top_players_raw_list = str(top_players.text.strip()).split('\n\n\n')
+ 
+    top_players_name_list = []
+    top_players_value_list = []
+
+
+    for position in top_players_raw_list:
+        splited_position = position.split('\xa0\xa0')
+        top_players_name_list.append(splited_position[0])
+        top_players_value_list.append(splited_position[1])
+
+
+    return top_players_name_list[:6], top_players_value_list[:6]
