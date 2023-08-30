@@ -254,11 +254,18 @@ def update_season(value):
         top_scorers = soup.find_all('div', {'class':'w90 m0Auto pb1e'})
         #  print(top_scorers)
 
-        top_scorers_name_list, top_scorers_goals_list = get_lists_with_top_players(top_scorers[0])
+        top_scorers_name_list, top_scorers_value_list = get_lists_with_top_players(top_scorers[0])
+
+
+        top_asists_name_list, top_asists_value_list = get_lists_with_top_players(top_scorers[1])
 
 
         print(top_scorers_name_list)
-        print(top_scorers_goals_list)
+        print(top_scorers_value_list)
+
+
+        print(top_asists_name_list)
+        print(top_asists_value_list)
 
 
     except Exception as e:
