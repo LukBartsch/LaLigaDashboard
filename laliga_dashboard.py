@@ -258,6 +258,8 @@ def update_season(value):
 
         top_assists_name_list, top_assists_value_list = get_lists_with_top_players(top_scorers[1], value)
 
+        clean_sheets_name_list, clean_sheets_value_list = get_lists_with_top_players(top_scorers[2], value)
+
 
         # print(top_scorers_name_list)
         # print(top_scorers_value_list)
@@ -331,10 +333,46 @@ def update_season(value):
         top_assists_data_second_col=df_top_assists.to_dict("records")
 
 
+
+
+
+        clean_sheets_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+        ]
+
+        parameters=clean_sheets_name_list[:3]
+        values=clean_sheets_value_list[:3]
+        df_clean_sheets = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        clean_sheets_data_first_col=df_clean_sheets.to_dict("records")
+
+
+        parameters=clean_sheets_name_list[3:]
+        values=clean_sheets_value_list[3:]
+        df_clean_sheets = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        clean_sheets_data_second_col=df_clean_sheets.to_dict("records")
+
+
     except Exception as e:
         print(e)
 
 
+
+    #TODO: ONLY EXAMPLE
     stats_columns = [
         {"name": "Parameter", "id": "Parameter"},
         {"name": "Value", "id": "Value"},
@@ -353,7 +391,7 @@ def update_season(value):
 
 
 
-
+    #TODO: ONLY EXAMPLE
     overview_columns = [
         {"name": "Parameter", "id": "Parameter"},
         {"name": "Value", "id": "Value"},
@@ -638,6 +676,11 @@ def update_season(value):
                         ]
                     )
 
+
+
+
+
+    #TODO: ONLY EXAMPLE
     overview_table = dash_table.DataTable(
                         data_overview,
                         overview_columns,
@@ -665,8 +708,7 @@ def update_season(value):
                             }
                         ]
     )
-
-
+    #TODO: ONLY EXAMPLE
     stats_table = dash_table.DataTable(
                         data_stats,
                         stats_columns,
@@ -724,7 +766,6 @@ def update_season(value):
                             }
                         ]
     )
-
     top_scorers_second_table = dash_table.DataTable(
                         top_scorers_data_second_col,
                         top_scorers_columns,
@@ -781,7 +822,6 @@ def update_season(value):
                             }
                         ]
     )
-
     top_assists_second_table = dash_table.DataTable(
                         top_assists_data_second_col,
                         top_assists_columns,
@@ -811,6 +851,60 @@ def update_season(value):
     )
 
 
+    clean_sheets_first_table = dash_table.DataTable(
+                        clean_sheets_data_first_col,
+                        clean_sheets_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Value'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+    clean_sheets_second_table = dash_table.DataTable(
+                        clean_sheets_data_second_col,
+                        clean_sheets_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Value'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
 
 
     tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test2', children=[
@@ -863,7 +957,17 @@ def update_season(value):
                         label='Clean Sheets', 
                         value='test5',
                         style=tab_style,
-                        selected_style=tab_selected_style),
+                        selected_style=tab_selected_style,
+                        children=[
+                            dbc.Row([
+                                dbc.Col(
+                                    clean_sheets_first_table
+                                ),
+                                dbc.Col(
+                                    clean_sheets_second_table
+                                )
+                            ]),
+                        ]),
                 ],
                 style={
                         'marginTop': '30px'
