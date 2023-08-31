@@ -450,13 +450,15 @@ def clean_list(first_col: list, second_col: list) -> list:
     return cleaned_list
 
 
-def get_lists_with_top_players(top_players: BeautifulSoup, season_number) -> list:
+def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> list:
     """Get list with top players
 
     Parameters
     ----------
     top_players : BeautifulSoup
         BeautifulSoup object with data from website 
+    season_number : str
+        Season number
 
     Returns
     -------
