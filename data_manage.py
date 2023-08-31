@@ -450,7 +450,7 @@ def clean_list(first_col: list, second_col: list) -> list:
     return cleaned_list
 
 
-def get_lists_with_top_players(top_players: BeautifulSoup) -> list:
+def get_lists_with_top_players(top_players: BeautifulSoup, season_number) -> list:
     """Get list with top players
 
     Parameters
@@ -463,17 +463,23 @@ def get_lists_with_top_players(top_players: BeautifulSoup) -> list:
     list
         Clean data with info about top players
     """
-
-    top_players_raw_list = str(top_players.text.strip()).split('\n\n\n')
- 
     top_players_name_list = []
     top_players_value_list = []
 
+    if season_number == "Current season":
+        top_players_raw_list = str(top_players.text.strip()).split('\n\n\n')
 
-    for position in top_players_raw_list:
-        splited_position = position.split('\xa0\xa0')
-        top_players_name_list.append(splited_position[0])
-        top_players_value_list.append(splited_position[1])
+        for position in top_players_raw_list:
+            splited_position = position.split('\xa0\xa0')
+            top_players_name_list.append(splited_position[0])
+            top_players_value_list.append(splited_position[1])
+    else:
+        top_players_raw_list = str(top_players.text.strip()).split('\xa0\xa0')
+
+        for position in top_players_raw_list:
+            top_players_name_list.append(position)
+            top_players_value_list.append('10')
+
 
 
     return top_players_name_list[:6], top_players_value_list[:6]

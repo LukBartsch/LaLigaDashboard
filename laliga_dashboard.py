@@ -254,18 +254,37 @@ def update_season(value):
         top_scorers = soup.find_all('div', {'class':'w90 m0Auto pb1e'})
         #  print(top_scorers)
 
-        top_scorers_name_list, top_scorers_value_list = get_lists_with_top_players(top_scorers[0])
+        top_scorers_name_list, top_scorers_value_list = get_lists_with_top_players(top_scorers[0], value)
 
-
-        top_asists_name_list, top_asists_value_list = get_lists_with_top_players(top_scorers[1])
+        top_asists_name_list, top_asists_value_list = get_lists_with_top_players(top_scorers[1], value)
 
 
         print(top_scorers_name_list)
         print(top_scorers_value_list)
 
 
-        print(top_asists_name_list)
-        print(top_asists_value_list)
+        # print(top_asists_name_list)
+        # print(top_asists_value_list)
+
+
+        top_scorers_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+        ]
+
+        parameters=top_scorers_name_list[:3]
+        values=top_scorers_value_list[:3]
+
+        df_top_scorers = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+
+        top_scorers_data=df_top_scorers.to_dict("records")
 
 
     except Exception as e:
@@ -635,6 +654,35 @@ def update_season(value):
                         ]
     )
 
+
+    top_scorers_table = dash_table.DataTable(
+                        top_scorers_data,
+                        top_scorers_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Parameter'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+
     tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test2', children=[
                     dcc.Tab(
                         label='League Stats', 
@@ -655,7 +703,17 @@ def update_season(value):
                         label='Top scorers', 
                         value='test3',
                         style=tab_style,
-                        selected_style=tab_selected_style),
+                        selected_style=tab_selected_style,
+                        children=[
+                            dbc.Row([
+                                dbc.Col(
+                                    top_scorers_table
+                                ),
+                                dbc.Col(
+                                    top_scorers_table
+                                )
+                            ]),
+                        ]),
                     dcc.Tab(
                         label='Top assists', 
                         value='test4',
