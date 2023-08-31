@@ -10,7 +10,7 @@ import pandas as pd
 
 from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
-                        get_lists_with_top_players
+                        get_lists_with_top_players, prepare_data_about_top_players_for_datatable
 
 
 
@@ -250,122 +250,16 @@ def update_season(value):
     
 
     try:
-
         top_scorers = soup.find_all('div', {'class':'w90 m0Auto pb1e'})
-        #  print(top_scorers)
 
         top_scorers_name_list, top_scorers_value_list = get_lists_with_top_players(top_scorers[0], value)
-
         top_assists_name_list, top_assists_value_list = get_lists_with_top_players(top_scorers[1], value)
-
         clean_sheets_name_list, clean_sheets_value_list = get_lists_with_top_players(top_scorers[2], value)
 
 
-        # print(top_scorers_name_list)
-        # print(top_scorers_value_list)
-
-
-        # print(top_asists_name_list)
-        # print(top_asists_value_list)
-
-
-        top_scorers_columns = [
-        {"name": "Parameter", "id": "Parameter"},
-        {"name": "Value", "id": "Value"},
-        ]
-
-        parameters=top_scorers_name_list[:3]
-        values=top_scorers_value_list[:3]
-        df_top_scorers = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        top_scorers_data_first_col=df_top_scorers.to_dict("records")
-
-
-        parameters=top_scorers_name_list[3:]
-        values=top_scorers_value_list[3:]
-        df_top_scorers = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        top_scorers_data_second_col=df_top_scorers.to_dict("records")
-
-
-
-
-        top_assists_columns = [
-        {"name": "Parameter", "id": "Parameter"},
-        {"name": "Value", "id": "Value"},
-        ]
-
-        parameters=top_assists_name_list[:3]
-        values=top_assists_value_list[:3]
-        df_top_assists = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        top_assists_data_first_col=df_top_assists.to_dict("records")
-
-
-        parameters=top_assists_name_list[3:]
-        values=top_assists_value_list[3:]
-        df_top_assists = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        top_assists_data_second_col=df_top_assists.to_dict("records")
-
-
-
-
-
-        clean_sheets_columns = [
-        {"name": "Parameter", "id": "Parameter"},
-        {"name": "Value", "id": "Value"},
-        ]
-
-        parameters=clean_sheets_name_list[:3]
-        values=clean_sheets_value_list[:3]
-        df_clean_sheets = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        clean_sheets_data_first_col=df_clean_sheets.to_dict("records")
-
-
-        parameters=clean_sheets_name_list[3:]
-        values=clean_sheets_value_list[3:]
-        df_clean_sheets = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        clean_sheets_data_second_col=df_clean_sheets.to_dict("records")
-
+        top_scorers_columns, top_scorers_data_first_col, top_scorers_data_second_col = prepare_data_about_top_players_for_datatable(top_scorers_name_list, top_scorers_value_list)
+        top_assists_columns, top_assists_data_first_col, top_assists_data_second_col = prepare_data_about_top_players_for_datatable(top_assists_name_list, top_assists_value_list)
+        clean_sheets_columns, clean_sheets_data_first_col, clean_sheets_data_second_col = prepare_data_about_top_players_for_datatable(clean_sheets_name_list, clean_sheets_value_list)
 
     except Exception as e:
         print(e)

@@ -3,6 +3,8 @@ import pathlib
 import os
 import requests
 
+import pandas as pd
+
 from bs4 import BeautifulSoup
 
 
@@ -482,6 +484,39 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
             top_players_name_list.append(position)
             top_players_value_list.append('10')
 
-
-
     return top_players_name_list[:6], top_players_value_list[:6]
+
+
+
+def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> list:
+    
+    top_players_columns = [
+    {"name": "Parameter", "id": "Parameter"},
+    {"name": "Value", "id": "Value"},
+    ]
+
+    parameters=name_list[:3]
+    values=value_list[:3]
+    df_top_scorers = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    top_players_data_first_col=df_top_scorers.to_dict("records")
+
+    parameters=name_list[3:]
+    values=value_list[3:]
+    df_top_scorers = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    top_players_data_second_col=df_top_scorers.to_dict("records")
+
+    return top_players_columns, top_players_data_first_col, top_players_data_second_col
