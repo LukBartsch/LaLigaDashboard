@@ -261,8 +261,19 @@ def update_season(value):
         top_assists_columns, top_assists_data_first_col, top_assists_data_second_col = prepare_data_about_top_players_for_datatable(top_assists_name_list, top_assists_value_list)
         clean_sheets_columns, clean_sheets_data_first_col, clean_sheets_data_second_col = prepare_data_about_top_players_for_datatable(clean_sheets_name_list, clean_sheets_value_list)
 
-    except Exception as e:
-        print(e)
+    except:
+
+        top_scorers_columns = [] 
+        top_scorers_data_first_col = {}
+        top_scorers_data_second_col = {}
+
+        top_assists_columns = []
+        top_assists_data_first_col = {}
+        top_assists_data_second_col = {}
+
+        clean_sheets_columns = []
+        clean_sheets_data_first_col = {}
+        clean_sheets_data_second_col = {}
 
 
 
