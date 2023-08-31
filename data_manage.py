@@ -489,6 +489,20 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
 
 def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> list:
+    """Prepare data about top players for datatable
+
+    Parameters
+    ----------
+    name_list : list
+        List with top players names
+    value_list : list
+        List with top players values
+
+    Returns
+    -------
+    list
+        Prepared data about top players for datatable
+    """
     
     top_players_columns = [
     {"name": "Parameter", "id": "Parameter"},
