@@ -3,6 +3,8 @@ import pathlib
 import os
 import requests
 
+import pandas as pd
+
 from bs4 import BeautifulSoup
 
 
@@ -450,13 +452,15 @@ def clean_list(first_col: list, second_col: list) -> list:
     return cleaned_list
 
 
-def get_lists_with_top_players(top_players: BeautifulSoup, season_number) -> list:
+def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> list:
     """Get list with top players
 
     Parameters
     ----------
     top_players : BeautifulSoup
         BeautifulSoup object with data from website 
+    season_number : str
+        Season number
 
     Returns
     -------
@@ -480,6 +484,53 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number) -> lis
             top_players_name_list.append(position)
             top_players_value_list.append('10')
 
-
-
     return top_players_name_list[:6], top_players_value_list[:6]
+
+
+
+def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> list:
+    """Prepare data about top players for datatable
+
+    Parameters
+    ----------
+    name_list : list
+        List with top players names
+    value_list : list
+        List with top players values
+
+    Returns
+    -------
+    list
+        Prepared data about top players for datatable
+    """
+    
+    top_players_columns = [
+    {"name": "Parameter", "id": "Parameter"},
+    {"name": "Value", "id": "Value"},
+    ]
+
+    parameters=name_list[:3]
+    values=value_list[:3]
+    df_top_scorers = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    top_players_data_first_col=df_top_scorers.to_dict("records")
+
+    parameters=name_list[3:]
+    values=value_list[3:]
+    df_top_scorers = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    top_players_data_second_col=df_top_scorers.to_dict("records")
+
+    return top_players_columns, top_players_data_first_col, top_players_data_second_col
