@@ -256,7 +256,7 @@ def update_season(value):
 
         top_scorers_name_list, top_scorers_value_list = get_lists_with_top_players(top_scorers[0], value)
 
-        top_asists_name_list, top_asists_value_list = get_lists_with_top_players(top_scorers[1], value)
+        top_assists_name_list, top_assists_value_list = get_lists_with_top_players(top_scorers[1], value)
 
 
         # print(top_scorers_name_list)
@@ -296,6 +296,39 @@ def update_season(value):
             )
         )
         top_scorers_data_second_col=df_top_scorers.to_dict("records")
+
+
+
+
+        top_assists_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+        ]
+
+        parameters=top_assists_name_list[:3]
+        values=top_assists_value_list[:3]
+        df_top_assists = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        top_assists_data_first_col=df_top_assists.to_dict("records")
+
+
+        parameters=top_assists_name_list[3:]
+        values=top_assists_value_list[3:]
+        df_top_assists = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        top_assists_data_second_col=df_top_assists.to_dict("records")
 
 
     except Exception as e:
@@ -721,6 +754,63 @@ def update_season(value):
     )
 
 
+    top_assists_first_table = dash_table.DataTable(
+                        top_assists_data_first_col,
+                        top_assists_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Value'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+
+    top_assists_second_table = dash_table.DataTable(
+                        top_assists_data_second_col,
+                        top_assists_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Value'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+
+
 
 
     tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test2', children=[
@@ -758,7 +848,17 @@ def update_season(value):
                         label='Top assists', 
                         value='test4',
                         style=tab_style,
-                        selected_style=tab_selected_style),
+                        selected_style=tab_selected_style,
+                        children=[
+                            dbc.Row([
+                                dbc.Col(
+                                    top_assists_first_table
+                                ),
+                                dbc.Col(
+                                    top_assists_second_table
+                                )
+                            ]),
+                        ]),
                     dcc.Tab(
                         label='Clean Sheets', 
                         value='test5',
