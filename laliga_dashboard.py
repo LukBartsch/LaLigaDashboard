@@ -274,7 +274,6 @@ def update_season(value):
 
         parameters=top_scorers_name_list[:3]
         values=top_scorers_value_list[:3]
-
         df_top_scorers = pd.DataFrame(
             dict(
                 [
@@ -283,8 +282,20 @@ def update_season(value):
                 ]
             )
         )
+        top_scorers_data_first_col=df_top_scorers.to_dict("records")
 
-        top_scorers_data=df_top_scorers.to_dict("records")
+
+        parameters=top_scorers_name_list[3:]
+        values=top_scorers_value_list[3:]
+        df_top_scorers = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        top_scorers_data_second_col=df_top_scorers.to_dict("records")
 
 
     except Exception as e:
@@ -655,8 +666,8 @@ def update_season(value):
     )
 
 
-    top_scorers_table = dash_table.DataTable(
-                        top_scorers_data,
+    top_scorers_first_table = dash_table.DataTable(
+                        top_scorers_data_first_col,
                         top_scorers_columns,
                         style_header = {'display': 'none'},
                         style_cell={
@@ -671,7 +682,35 @@ def update_season(value):
                                 'text-align': 'center',
                             },
                             {
-                                'if': {'column_id': 'Parameter'},
+                                'if': {'column_id': 'Value'},
+                                'color': '#007eff',
+                            }
+                        ],
+                        style_data_conditional=[
+                            {
+                                'if': {'row_index': 'odd'},
+                                'backgroundColor': 'rgb(30, 30, 30)',
+                            }
+                        ]
+    )
+
+    top_scorers_second_table = dash_table.DataTable(
+                        top_scorers_data_second_col,
+                        top_scorers_columns,
+                        style_header = {'display': 'none'},
+                        style_cell={
+                            'backgroundColor': '#111111',
+                            'color': '#ffffff'
+                        },
+                        style_cell_conditional=[
+                            {
+                                'if': {'column_id': ['Parameter', 'Value']},
+                                'padding-right': '10px',
+                                'padding-left': '10px',
+                                'text-align': 'center',
+                            },
+                            {
+                                'if': {'column_id': 'Value'},
                                 'color': '#007eff',
                             }
                         ],
@@ -707,10 +746,10 @@ def update_season(value):
                         children=[
                             dbc.Row([
                                 dbc.Col(
-                                    top_scorers_table
+                                    top_scorers_first_table
                                 ),
                                 dbc.Col(
-                                    top_scorers_table
+                                    top_scorers_second_table
                                 )
                             ]),
                         ]),
