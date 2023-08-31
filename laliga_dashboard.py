@@ -259,8 +259,8 @@ def update_season(value):
         top_asists_name_list, top_asists_value_list = get_lists_with_top_players(top_scorers[1], value)
 
 
-        print(top_scorers_name_list)
-        print(top_scorers_value_list)
+        # print(top_scorers_name_list)
+        # print(top_scorers_value_list)
 
 
         # print(top_asists_name_list)
@@ -306,10 +306,8 @@ def update_season(value):
         {"name": "Parameter", "id": "Parameter"},
         {"name": "Value", "id": "Value"},
     ]
-
     parameters=['35min/Goal', '61% Clean Sheets', '50% Both Teams Scored']
     values=['72 Goals in 28 matches', '17 times out of 28 matches', '14 times out of 28 matches']
-
     df_stats = pd.DataFrame(
         dict(
             [
@@ -318,7 +316,6 @@ def update_season(value):
             ]
         )
     )
-
     data_stats=df_stats.to_dict("records")
 
 
@@ -328,10 +325,8 @@ def update_season(value):
         {"name": "Parameter", "id": "Parameter"},
         {"name": "Value", "id": "Value"},
     ]
-
     parameters=['2.57', '47%', '53%']
     values=['Goals / Match', 'First half', 'Second half']
-
     df_overview = pd.DataFrame(
         dict(
             [
@@ -341,6 +336,8 @@ def update_season(value):
         )
     )
     data_overview=df_overview.to_dict("records")
+
+
 
 
     main_table = dash_table.DataTable(
@@ -666,6 +663,7 @@ def update_season(value):
     )
 
 
+
     top_scorers_first_table = dash_table.DataTable(
                         top_scorers_data_first_col,
                         top_scorers_columns,
@@ -721,6 +719,9 @@ def update_season(value):
                             }
                         ]
     )
+
+
+
 
     tabs_menu = dcc.Tabs(id="tabs-example-graph", value='test2', children=[
                     dcc.Tab(
