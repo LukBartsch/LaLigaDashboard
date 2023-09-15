@@ -2,6 +2,7 @@ import glob
 import pathlib
 import os
 import requests
+from typing import Tuple
 
 import pandas as pd
 
@@ -301,7 +302,7 @@ def set_legend_colors(len_of_legend: int) -> list:
     return legend_colors
 
 
-def set_main_table_position_colors(len_of_legend: int, season_number: str) -> dict:
+def set_main_table_position_colors(len_of_legend: int, season_number: str) -> Tuple[dict, dict, dict, dict]:
     """Set colors for main table positions
 
     Parameters
@@ -313,7 +314,7 @@ def set_main_table_position_colors(len_of_legend: int, season_number: str) -> di
 
     Returns
     -------
-    dict
+    Tuple[dict, dict, dict, dict]
         Four dictionarys with colors for main table positions
     """
 
