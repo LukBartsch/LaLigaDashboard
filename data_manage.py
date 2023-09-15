@@ -485,6 +485,12 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
             top_players_name_list.append(position)
             top_players_value_list.append('10')
 
+        for i in range(6):
+            if i != 0:
+                top_players_name_list[i] = top_players_name_list[i][2:]
+
+            top_players_value_list[i] = top_players_name_list[i+1][:2]
+
     return top_players_name_list[:6], top_players_value_list[:6]
 
 
