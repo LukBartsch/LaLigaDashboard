@@ -489,7 +489,7 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
 
 
-def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> list:
+def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> Tuple[list, dict, dict]:
     """Prepare data about top players for datatable
 
     Parameters
@@ -501,8 +501,11 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
 
     Returns
     -------
-    list
-        Prepared data about top players for datatable
+    Tuple[list, dict, dict]
+        Tuple with three elements:
+        - list with columns names
+        - dict with data for first column
+        - dict with data for second column  
     """
     
     top_players_columns = [
