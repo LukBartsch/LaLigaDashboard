@@ -453,7 +453,7 @@ def clean_list(first_col: list, second_col: list) -> list:
     return cleaned_list
 
 
-def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> list:
+def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> Tuple[list, list]:
     """Get list with top players
 
     Parameters
@@ -465,8 +465,8 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
     Returns
     -------
-    list
-        Clean data with info about top players
+    Tuple[list, list]
+        Two lists with info about top players names and values
     """
     top_players_name_list = []
     top_players_value_list = []
