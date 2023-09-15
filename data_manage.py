@@ -2,6 +2,7 @@ import glob
 import pathlib
 import os
 import requests
+from typing import Tuple
 
 import pandas as pd
 
@@ -301,7 +302,7 @@ def set_legend_colors(len_of_legend: int) -> list:
     return legend_colors
 
 
-def set_main_table_position_colors(len_of_legend: int, season_number: str) -> dict:
+def set_main_table_position_colors(len_of_legend: int, season_number: str) -> Tuple[dict, dict, dict, dict]:
     """Set colors for main table positions
 
     Parameters
@@ -313,7 +314,7 @@ def set_main_table_position_colors(len_of_legend: int, season_number: str) -> di
 
     Returns
     -------
-    dict
+    Tuple[dict, dict, dict, dict]
         Four dictionarys with colors for main table positions
     """
 
@@ -452,7 +453,7 @@ def clean_list(first_col: list, second_col: list) -> list:
     return cleaned_list
 
 
-def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> list:
+def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -> Tuple[list, list]:
     """Get list with top players
 
     Parameters
@@ -464,8 +465,8 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
     Returns
     -------
-    list
-        Clean data with info about top players
+    Tuple[list, list]
+        Two lists with info about top players names and values
     """
     top_players_name_list = []
     top_players_value_list = []
@@ -488,7 +489,7 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
 
 
-def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> list:
+def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> Tuple[list, dict, dict]:
     """Prepare data about top players for datatable
 
     Parameters
@@ -500,8 +501,11 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
 
     Returns
     -------
-    list
-        Prepared data about top players for datatable
+    Tuple[list, dict, dict]
+        Tuple with three elements:
+        - list with columns names
+        - dict with data for first column
+        - dict with data for second column  
     """
     
     top_players_columns = [
