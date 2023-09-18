@@ -486,13 +486,47 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
             top_players_value_list.append('10')
 
         for i in range(6):
-            if i != 0:
-                top_players_name_list[i] = top_players_name_list[i][2:]
 
-            top_players_value_list[i] = top_players_name_list[i+1][:2]
+            two_digit_stat = check_double_stat(top_players_name_list[i][:2])
+            two_digit_stat_next = check_double_stat(top_players_name_list[i+1][:2])
+
+            if two_digit_stat_next:
+                if i != 0:
+                    top_players_name_list[i] = top_players_name_list[i][2:]
+
+                top_players_value_list[i] = top_players_name_list[i+1][:2]
+            else:
+                if i != 0 and two_digit_stat:
+                    top_players_name_list[i] = top_players_name_list[i][2:]
+                if i != 0 and not two_digit_stat:
+                    top_players_name_list[i] = top_players_name_list[i][1:]
+
+                top_players_value_list[i] = top_players_name_list[i+1][:1]
 
     return top_players_name_list[:6], top_players_value_list[:6]
 
+
+def check_double_stat(stat: str) -> bool:
+    """Check if stat is double digit
+
+    Parameters
+    ----------
+    stat : str
+        Single stat
+    
+    Returns
+    -------
+    bool
+        True if stat is double digit, False if not
+    """
+
+    for digit in stat:
+        if digit.isdigit():
+            double_stat = True
+        else:
+            double_stat = False
+
+    return double_stat
 
 
 def prepare_data_about_top_players_for_datatable(name_list: list, value_list: list) -> Tuple[list, dict, dict]:
