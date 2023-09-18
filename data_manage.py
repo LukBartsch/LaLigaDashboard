@@ -507,7 +507,19 @@ def get_lists_with_top_players(top_players: BeautifulSoup, season_number: str) -
 
 
 def check_double_stat(stat: str) -> bool:
+    """Check if stat is double digit
+
+    Parameters
+    ----------
+    stat : str
+        Single stat
     
+    Returns
+    -------
+    bool
+        True if stat is double digit, False if not
+    """
+
     for digit in stat:
         if digit.isdigit():
             double_stat = True
