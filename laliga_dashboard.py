@@ -654,13 +654,13 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
                             },
                             {
-                                'if': {'column_id': 'Value'},
+                                'if': {'column_id': ['Value']},
                                 'color': '#007eff',
                             }
                         ],
@@ -681,13 +681,13 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
                             },
                             {
-                                'if': {'column_id': 'Value'},
+                                'if': {'column_id': ['Value']},
                                 'color': '#007eff',
                             }
                         ],
@@ -710,7 +710,7 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
@@ -737,7 +737,7 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
@@ -766,7 +766,7 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
@@ -793,7 +793,7 @@ def update_season(value):
                         },
                         style_cell_conditional=[
                             {
-                                'if': {'column_id': ['Parameter', 'Value']},
+                                'if': {'column_id': ['Position', 'Parameter', 'Value']},
                                 'padding-right': '10px',
                                 'padding-left': '10px',
                                 'text-align': 'center',
