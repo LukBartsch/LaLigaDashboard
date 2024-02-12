@@ -549,6 +549,7 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
     """
     
     top_players_columns = [
+    {"name": "Position", "id": "Position"},
     {"name": "Parameter", "id": "Parameter"},
     {"name": "Value", "id": "Value"},
     ]
@@ -558,6 +559,7 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
     df_top_scorers = pd.DataFrame(
         dict(
             [
+                ("Position", ["1.", "2.", "3."]),
                 ("Parameter", parameters),
                 ("Value", values),
             ]
@@ -570,6 +572,7 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
     df_top_scorers = pd.DataFrame(
         dict(
             [
+                ("Position", ["4.", "5.", "6."]),
                 ("Parameter", parameters),
                 ("Value", values),
             ]
