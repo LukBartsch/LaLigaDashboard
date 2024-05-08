@@ -119,6 +119,7 @@ def update_season(value):
 
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
+        options.add_argument('--log-level=3')
 
         driver = webdriver.Chrome(options=options)
         driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
