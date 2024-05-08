@@ -3,6 +3,8 @@ import requests
 # import pathlib
 # import os
 
+from selenium import webdriver
+
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
@@ -103,6 +105,12 @@ app.layout = dbc.Container([
     Input('select-season-dropdown', 'value')
 )
 def update_season(value):
+
+
+    # driver = webdriver.Chrome()
+    # driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
+    # print(driver.title)
+    # driver.quit()
 
 
     if value == 'Current season':
