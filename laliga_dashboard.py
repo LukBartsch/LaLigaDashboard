@@ -4,7 +4,7 @@ import requests
 # import os
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -117,23 +117,36 @@ def update_season(value):
 
     else:
 
+        service = Service()
+
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         options.add_argument('--log-level=3')
+        options.add_experimental_option(
+            "prefs", {
+                # block image loading
+                "profile.managed_default_content_settings.images": 2,
+            }
+        )
 
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(service=service, options=options)
         driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
         #print(driver.current_url)
-        with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
-            f.write(driver.page_source)
+
+        page_source = driver.execute_script("return document.documentElement.outerHTML;")
+        #print(page_source)
+        # with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
+        #     f.write(driver.page_source)
         driver.quit()
         print("=====================================")
 
 
 
         #with open("static\\stats\\" + value, encoding="utf8") as f:
-        with open("static\\stats\\current_page.html", encoding="utf8") as f:
-            contents = f.read()
+        # with open("static\\stats\\current_page.html", encoding="utf8") as f:
+        #     contents = f.read()
+
+        contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
