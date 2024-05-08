@@ -4,6 +4,7 @@ import requests
 # import os
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -107,12 +108,6 @@ app.layout = dbc.Container([
 def update_season(value):
 
 
-    # driver = webdriver.Chrome()
-    # driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
-    # print(driver.title)
-    # driver.quit()
-
-
     if value == 'Current season':
 
         url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
@@ -122,7 +117,21 @@ def update_season(value):
 
     else:
 
-        with open("static\\stats\\" + value, encoding="utf8") as f:
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+
+        driver = webdriver.Chrome(options=options)
+        driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
+        #print(driver.current_url)
+        with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
+            f.write(driver.page_source)
+        driver.quit()
+        print("=====================================")
+
+
+
+        #with open("static\\stats\\" + value, encoding="utf8") as f:
+        with open("static\\stats\\current_page.html", encoding="utf8") as f:
             contents = f.read()
 
         soup = BeautifulSoup(contents, 'html.parser')
