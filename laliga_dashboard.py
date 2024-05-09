@@ -5,6 +5,8 @@ import requests
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -120,7 +122,7 @@ def update_season(value):
         service = Service()
 
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        #options.add_argument('--headless')
         options.add_argument('--log-level=3')
         options.add_experimental_option(
             "prefs", {
@@ -133,20 +135,40 @@ def update_season(value):
         driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
         #print(driver.current_url)
 
-        page_source = driver.execute_script("return document.documentElement.outerHTML;")
+
+
+        xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[1]/a"""
+        xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        full_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+        search_input = driver.find_element(By.XPATH, full_xpath)
+
+  
+
+        #choice = driver.find_element(By.CLASS_NAME, "drop-down-parent fl boldFont")
+
+        #choice.click()
+
+        #choice = search_input.find_element(By.XPATH, """//ul/li[1]/a""")
+
+        #choice.click()
+
+        search_input.click()
+        #print(choice.execute_script("return document.documentElement.outerHTML;"))
+
+        
         #print(page_source)
         # with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
         #     f.write(driver.page_source)
-        driver.quit()
+        #driver.quit()
         print("=====================================")
 
 
 
-        #with open("static\\stats\\" + value, encoding="utf8") as f:
+        with open("static\\stats\\" + value, encoding="utf8") as f:
         # with open("static\\stats\\current_page.html", encoding="utf8") as f:
-        #     contents = f.read()
+             contents = f.read()
 
-        contents = page_source
+        #contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
