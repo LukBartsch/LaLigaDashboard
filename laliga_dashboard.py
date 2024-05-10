@@ -5,8 +5,11 @@ import requests
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.common.exceptions import ElementClickInterceptedException
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
@@ -132,15 +135,31 @@ def update_season(value):
         )
 
         driver = webdriver.Chrome(service=service, options=options)
+        wait = WebDriverWait(driver, 20)
         driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
         #print(driver.current_url)
 
 
 
         xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[1]/a"""
-        xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        #xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
         full_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-        search_input = driver.find_element(By.XPATH, full_xpath)
+
+        #//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[1]/a
+
+        full_xpath = """//*[@id="league-tables-wrapper"]/div/div[1]/table/tbody/tr[3]/td[3]/a"""
+
+        a1="""/html/body/div[3]/div/div[2]/div[2]/div/div/div[4]/div[2]/ul/li[1]"""
+        #search_input = driver.find_element(By.XPATH, a1)
+
+
+        try:
+            showmore_link = wait.until(EC.element_to_be_clickable((By.XPATH, a1)))
+            showmore_link.click()
+
+        except ElementClickInterceptedException:
+            print("Trying to click on the button again")
+            driver.execute_script("arguments[0].click()", showmore_link)
 
   
 
@@ -152,15 +171,16 @@ def update_season(value):
 
         #choice.click()
 
-        search_input.click()
+        #search_input.click()
         #print(choice.execute_script("return document.documentElement.outerHTML;"))
 
         
         #print(page_source)
         # with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
         #     f.write(driver.page_source)
-        #driver.quit()
+        driver.quit()
         print("=====================================")
+        print(showmore_link)
 
 
 
@@ -168,7 +188,7 @@ def update_season(value):
         # with open("static\\stats\\current_page.html", encoding="utf8") as f:
              contents = f.read()
 
-        #contents = page_source
+        #contents = showmore_link.execute_script("return document.documentElement.outerHTML;")
 
         soup = BeautifulSoup(contents, 'html.parser')
 
