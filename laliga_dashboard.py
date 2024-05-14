@@ -17,6 +17,8 @@ import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from common import url as URL, raw_url as RAW_URL
+
 from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
                         get_lists_with_top_players, prepare_data_about_top_players_for_datatable
@@ -41,17 +43,7 @@ tab_selected_style = {
 
 
 
-
-
-
-
-
-
-
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-
-
 
 
 app.layout = dbc.Container([
@@ -116,8 +108,7 @@ def update_season(value):
 
     if value == 'Current season':
 
-        url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
-        response = requests.get(url)
+        response = requests.get(URL)
         soup = BeautifulSoup(response.text, 'html.parser')
 
     else:
@@ -136,7 +127,7 @@ def update_season(value):
 
         driver = webdriver.Chrome(service=service, options=options)
         wait = WebDriverWait(driver, 20)
-        driver.get("https://footystats.org/spain/la-liga")
+        driver.get(RAW_URL)
         #print(driver.current_url)
 
 

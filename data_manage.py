@@ -8,6 +8,8 @@ import pandas as pd
 
 from bs4 import BeautifulSoup
 
+from common import url as URL
+
 
 def set_files_list() -> dict:
     """Get list of all seasons available on website.
@@ -45,8 +47,7 @@ def get_current_season_number() -> str:
         Current season number (string)
     """
 
-    url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
-    response = requests.get(url)
+    response = requests.get(URL)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
@@ -64,8 +65,7 @@ def get_older_seasons() -> list:
         List with older seasons options
     """
 
-    url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
-    response = requests.get(url)
+    response = requests.get(URL)
     soup = BeautifulSoup(response.text, 'html.parser')
 
     dropdown_options = soup.find ('ul', {'class':'drop-down'}).text.strip()
