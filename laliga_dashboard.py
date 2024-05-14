@@ -120,12 +120,6 @@ def update_season(value):
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-    
-        dropdown_options = soup.find ('ul', {'class':'drop-down'}).text.strip()
-        dropdown_options = dropdown_options.split('\n')
-        print(dropdown_options)
-
-
     else:
 
         service = Service()

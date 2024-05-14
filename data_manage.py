@@ -10,46 +10,25 @@ from bs4 import BeautifulSoup
 
 
 def set_files_list() -> dict:
-    """Get list of all files in static\stats folder
+    """Get list of all seasons available on website.
 
     Returns
     -------
     dict
-        Dictionary with all files in static\stats folder
+        Dictionary with all options for dropdown menu
     """
-
-    path = str(pathlib.Path(__file__).parent.resolve())
-    files_path = path + "\static\stats"
-
-    raw_all_files = glob.glob(files_path + "/*.txt")
-    raw_all_files.sort(reverse=True)
 
     current_season = get_current_season_number()
     current_season_label = "Season " + str(current_season) + " (Current season)"
 
-
     dropdown_seasons = get_older_seasons()
     
-
     all_files_keys = ["Current season"]
     all_files_value = [current_season_label]
-
 
     for option in dropdown_seasons:
         all_files_keys.append(option)
         all_files_value.append("Season " + option)
-
-
-
-    # for file in raw_all_files:
-    #     head, tail = os.path.split(file)
-    #     all_files_keys.append(tail)
-
-    #     season_number = str(tail)[-9:-4]
-    #     splited_season_number = season_number.split("_")
-    #     all_files_value.append("Season " + splited_season_number[0] + "/" + splited_season_number[1])
-
-
         
     all_files_pairs = zip(all_files_keys, all_files_value)
     all_files_dict = dict(all_files_pairs)
