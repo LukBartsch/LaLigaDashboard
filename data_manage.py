@@ -26,18 +26,30 @@ def set_files_list() -> dict:
 
     current_season = get_current_season_number()
     current_season_label = "Season " + str(current_season) + " (Current season)"
+
+
+    dropdown_seasons = get_older_seasons()
     
 
     all_files_keys = ["Current season"]
     all_files_value = [current_season_label]
 
-    for file in raw_all_files:
-        head, tail = os.path.split(file)
-        all_files_keys.append(tail)
 
-        season_number = str(tail)[-9:-4]
-        splited_season_number = season_number.split("_")
-        all_files_value.append("Season " + splited_season_number[0] + "/" + splited_season_number[1])
+    for option in dropdown_seasons:
+        all_files_keys.append(option)
+        all_files_value.append("Season " + option)
+
+
+
+    # for file in raw_all_files:
+    #     head, tail = os.path.split(file)
+    #     all_files_keys.append(tail)
+
+    #     season_number = str(tail)[-9:-4]
+    #     splited_season_number = season_number.split("_")
+    #     all_files_value.append("Season " + splited_season_number[0] + "/" + splited_season_number[1])
+
+
         
     all_files_pairs = zip(all_files_keys, all_files_value)
     all_files_dict = dict(all_files_pairs)
@@ -59,9 +71,28 @@ def get_current_season_number() -> str:
     soup = BeautifulSoup(response.text, 'html.parser')
 
     table_title = soup.find ('div', {'class':'normalContentWidth cf leagueStatsTable'}).text.strip()
-    table_title = table_title[-5:]
+    current_season = table_title[-7:]
 
-    return table_title
+    return current_season
+
+
+def get_older_seasons() -> list:
+    """Get older seasons options from website (dropdwon menu)
+
+    Returns
+    -------
+    list
+        List with older seasons options
+    """
+
+    url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    dropdown_options = soup.find ('ul', {'class':'drop-down'}).text.strip()
+    dropdown_options = dropdown_options.split('\n')
+
+    return dropdown_options
 
 
 def get_head_row(main_table_head: BeautifulSoup) -> list:
