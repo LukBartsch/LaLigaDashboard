@@ -1,4 +1,5 @@
 import requests
+import time
 # import glob
 # import pathlib
 # import os
@@ -136,59 +137,51 @@ def update_season(value):
 
         driver = webdriver.Chrome(service=service, options=options)
         wait = WebDriverWait(driver, 20)
-        driver.get("https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc")
+        driver.get("https://footystats.org/spain/la-liga")
         #print(driver.current_url)
 
 
-
-        xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[1]/a"""
-        #xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
-        full_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-
-        #//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[1]/a
-
-        full_xpath = """//*[@id="league-tables-wrapper"]/div/div[1]/table/tbody/tr[3]/td[3]/a"""
-
-        a1="""/html/body/div[3]/div/div[2]/div[2]/div/div/div[4]/div[2]/ul/li[1]"""
-        #search_input = driver.find_element(By.XPATH, a1)
+        dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+        dropdown_list_option_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[2]"""
+        body_xpath = """/html/body"""
 
 
         try:
-            showmore_link = wait.until(EC.element_to_be_clickable((By.XPATH, a1)))
-            showmore_link.click()
 
-        except ElementClickInterceptedException:
-            print("Trying to click on the button again")
-            driver.execute_script("arguments[0].click()", showmore_link)
+            WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
+            WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+
+            WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+
+            elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+
+            page_str = elem.text
   
-
-        #choice = driver.find_element(By.CLASS_NAME, "drop-down-parent fl boldFont")
-
-        #choice.click()
-
-        #choice = search_input.find_element(By.XPATH, """//ul/li[1]/a""")
-
-        #choice.click()
-
-        #search_input.click()
-        #print(choice.execute_script("return document.documentElement.outerHTML;"))
+            page_source = elem.get_attribute('outerHTML')
 
         
-        #print(page_source)
-        # with open("static\\stats\\current_page.html", "w", encoding='utf8') as f:
-        #     f.write(driver.page_source)
+        except Exception as e:
+            print(e)
+
+
+
+        # with open("static\\stats\\current_page.html", "w", encoding='utf-8') as f:
+        #      f.write(page_source)
         driver.quit()
         print("=====================================")
-        print(showmore_link)
+        #print(showmore_link)
 
 
 
-        with open("static\\stats\\" + value, encoding="utf8") as f:
-        # with open("static\\stats\\current_page.html", encoding="utf8") as f:
-             contents = f.read()
+        #with open("static\\stats\\" + value, encoding="utf8") as f:
+        # with open("static\\stats\\current_page.html", encoding="utf-8") as f:
+        #      contents = f.read()
 
         #contents = showmore_link.execute_script("return document.documentElement.outerHTML;")
+
+        contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
