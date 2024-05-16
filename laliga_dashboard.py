@@ -19,7 +19,7 @@ import pandas as pd
 
 from common import url as URL, raw_url as RAW_URL
 
-from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
+from data_manage import set_seasons_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
                         get_lists_with_top_players, prepare_data_about_top_players_for_datatable
 
@@ -51,8 +51,8 @@ app.layout = dbc.Container([
                 dbc.Row([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
-                        options = set_files_list(),
-                        value = "Current season",
+                        options = set_seasons_list(),
+                        value = 0,
                         clearable = False,
                         style = {
                             'marginTop': '20px',
@@ -106,7 +106,7 @@ app.layout = dbc.Container([
 def update_season(value):
 
 
-    if value == 'Current season':
+    if value == 0:
 
         response = requests.get(URL)
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -116,7 +116,7 @@ def update_season(value):
         service = Service()
 
         options = webdriver.ChromeOptions()
-        #options.add_argument('--headless')
+        options.add_argument('--headless')
         options.add_argument('--log-level=3')
         options.add_experimental_option(
             "prefs", {
@@ -125,25 +125,30 @@ def update_season(value):
             }
         )
 
-        driver = webdriver.Chrome(service=service, options=options)
-        wait = WebDriverWait(driver, 20)
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
+        driver = webdriver.Chrome(options=options)
+        wait = WebDriverWait(driver, 10)
         driver.get(RAW_URL)
         #print(driver.current_url)
 
 
         dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
         dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-        dropdown_list_option_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[2]"""
+        dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{value}]"""
         body_xpath = """/html/body"""
+
+        page_source = ""
 
 
         try:
 
-            WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
-            WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
-            WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+            WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+
+            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
 
             elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
 
@@ -151,11 +156,10 @@ def update_season(value):
   
             page_source = elem.get_attribute('outerHTML')
 
-        
         except Exception as e:
             print(e)
 
-
+        
 
         # with open("static\\stats\\current_page.html", "w", encoding='utf-8') as f:
         #      f.write(page_source)
