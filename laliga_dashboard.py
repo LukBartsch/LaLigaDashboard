@@ -1,14 +1,25 @@
 import requests
+import time
 # import glob
 # import pathlib
 # import os
+
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+from selenium.common.exceptions import ElementClickInterceptedException
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from data_manage import set_files_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
+from common import url as URL, raw_url as RAW_URL
+
+from data_manage import set_seasons_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
                         get_lists_with_top_players, prepare_data_about_top_players_for_datatable
 
@@ -32,17 +43,7 @@ tab_selected_style = {
 
 
 
-
-
-
-
-
-
-
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
-
-
-
 
 
 app.layout = dbc.Container([
@@ -50,8 +51,8 @@ app.layout = dbc.Container([
                 dbc.Row([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
-                        options = set_files_list(),
-                        value = "Current season",
+                        options = set_seasons_list(),
+                        value = 0,
                         clearable = False,
                         style = {
                             'marginTop': '20px',
@@ -105,17 +106,76 @@ app.layout = dbc.Container([
 def update_season(value):
 
 
-    if value == 'Current season':
+    if value == 0:
 
-        url='https://footystats-org.translate.goog/spain/la-liga?_x_tr_sl=en&_x_tr_tl=pl&_x_tr_hl=pl&_x_tr_pto=sc'
-        response = requests.get(url)
+        response = requests.get(URL)
         soup = BeautifulSoup(response.text, 'html.parser')
-
 
     else:
 
-        with open("static\\stats\\" + value, encoding="utf8") as f:
-            contents = f.read()
+        service = Service()
+
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--log-level=3')
+        options.add_experimental_option(
+            "prefs", {
+                # block image loading
+                "profile.managed_default_content_settings.images": 2,
+            }
+        )
+
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
+        driver = webdriver.Chrome(options=options)
+        wait = WebDriverWait(driver, 10)
+        driver.get(RAW_URL)
+        #print(driver.current_url)
+
+
+        dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+        dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{value}]"""
+        body_xpath = """/html/body"""
+
+        page_source = ""
+
+
+        try:
+
+
+            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
+
+            WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+
+            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+
+            elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+
+            page_str = elem.text
+  
+            page_source = elem.get_attribute('outerHTML')
+
+        except Exception as e:
+            print(e)
+
+        
+
+        # with open("static\\stats\\current_page.html", "w", encoding='utf-8') as f:
+        #      f.write(page_source)
+        driver.quit()
+        print("=====================================")
+        #print(showmore_link)
+
+
+
+        #with open("static\\stats\\" + value, encoding="utf8") as f:
+        # with open("static\\stats\\current_page.html", encoding="utf-8") as f:
+        #      contents = f.read()
+
+        #contents = showmore_link.execute_script("return document.documentElement.outerHTML;")
+
+        contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
