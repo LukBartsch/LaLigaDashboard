@@ -70,7 +70,7 @@ app.layout = dbc.Container([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
                         options = set_seasons_list(),
-                        value = 0,
+                        value = "0",
                         clearable = False,
                         style = {
                             'marginTop': '20px',
@@ -124,7 +124,7 @@ app.layout = dbc.Container([
 def update_season(value):
 
 
-    if value == 0:
+    if value == "0":
 
         response = requests.get(URL)
         soup = BeautifulSoup(response.text, 'html.parser')
