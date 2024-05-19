@@ -119,9 +119,18 @@ app.layout = dbc.Container([
     Output('table-title', 'children'),
     Output('main-table', 'children'),
     Output('main-table-legend', 'children'),
-    Input('select-season-dropdown', 'value')
+    Input('select-season-dropdown', 'value'),
+    Input('select-season-dropdown', 'options')
 )
-def update_season(value):
+def update_season(value, options):
+
+
+    print(options)
+
+
+    if value == "0":
+        get_seasons_data()
+        print("dodałem sezony")
 
 
     if value == "0":
@@ -131,69 +140,69 @@ def update_season(value):
 
     else:
 
-        service = Service()
+        # service = Service()
 
-        options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
-        options.add_argument('--log-level=3')
-        options.add_experimental_option(
-            "prefs", {
-                # block image loading
-                "profile.managed_default_content_settings.images": 2,
-            }
-        )
+        # options = webdriver.ChromeOptions()
+        # options.add_argument('--headless')
+        # options.add_argument('--log-level=3')
+        # options.add_experimental_option(
+        #     "prefs", {
+        #         # block image loading
+        #         "profile.managed_default_content_settings.images": 2,
+        #     }
+        # )
 
-        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 
-        driver = webdriver.Chrome(options=options)
-        wait = WebDriverWait(driver, 10)
-        driver.get(RAW_URL)
-        #print(driver.current_url)
-
-
-        dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
-        dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-        dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{value}]"""
-        body_xpath = """/html/body"""
-
-        page_source = ""
+        # driver = webdriver.Chrome(options=options)
+        # wait = WebDriverWait(driver, 10)
+        # driver.get(RAW_URL)
+        # #print(driver.current_url)
 
 
-        try:
+        # dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        # dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+        # dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{value}]"""
+        # body_xpath = """/html/body"""
+
+        # page_source = ""
 
 
-            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
+        # try:
 
-            WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
 
-            WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+        #     WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
-            elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+        #     WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
 
-            page_str = elem.text
+        #     WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+
+        #     elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+
+        #     page_str = elem.text
   
-            page_source = elem.get_attribute('outerHTML')
+        #     page_source = elem.get_attribute('outerHTML')
 
-        except Exception as e:
-            print(e)
+        # except Exception as e:
+        #     print(e)
 
         
 
         # with open("static\\stats\\current_page.html", "w", encoding='utf-8') as f:
         #      f.write(page_source)
-        driver.quit()
-        print("=====================================")
+        #driver.quit()
+        #print("=====================================")
         #print(showmore_link)
 
 
 
         #with open("static\\stats\\" + value, encoding="utf8") as f:
-        # with open("static\\stats\\current_page.html", encoding="utf-8") as f:
-        #      contents = f.read()
+        with open(f"static\\stats\\season_{value}.html", encoding="utf-8") as f:
+              contents = f.read()
 
         #contents = showmore_link.execute_script("return document.documentElement.outerHTML;")
 
-        contents = page_source
+        #contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
@@ -959,6 +968,75 @@ def update_season(value):
 
     return league_logo, league_header, tabs_menu, table_title, main_table, main_table_legend
 
+
+
+
+def get_seasons_data():
+        
+
+        seasons_data_list = []
+
+        service = Service()
+
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--log-level=3')
+        options.add_experimental_option(
+            "prefs", {
+                # block image loading
+                "profile.managed_default_content_settings.images": 2,
+            }
+        )
+
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
+        
+        driver = webdriver.Chrome(options=options)
+        wait = WebDriverWait(driver, 10)
+        driver.get(RAW_URL)
+        #print(driver.current_url)
+
+        for i in range(3):
+
+
+            dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+            dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+            dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{i+1}]"""
+            body_xpath = """/html/body"""
+
+            page_source = ""
+
+
+            try:
+
+
+                WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
+
+                WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+
+                WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+
+                elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+
+                page_str = elem.text
+    
+                page_source = elem.get_attribute('outerHTML')
+
+                #seasons_data_list.append(page_source)
+
+                current_filename = f"static\\stats\\season_{i+1}.html"
+                with open(current_filename , "w", encoding='utf-8') as f:
+                    f.write(page_source)
+
+            except Exception as e:
+                print(e)
+
+            
+        driver.quit()
+
+        
+
+        return seasons_data_list
 
 
 server = app.server

@@ -28,9 +28,9 @@ def set_seasons_list() -> dict:
     all_files_keys = [0]
     all_files_value = [current_season_label]
 
-    for num, option in enumerate(dropdown_seasons):
-        all_files_keys.append(num+1)
-        all_files_value.append("Season " + option)
+    # for num, option in enumerate(dropdown_seasons):
+    #     all_files_keys.append(num+1)
+    #     all_files_value.append("Season " + option)
   
         
     all_files_pairs = zip(all_files_keys, all_files_value)
