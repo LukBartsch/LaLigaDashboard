@@ -12,14 +12,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.common.exceptions import ElementClickInterceptedException
 
-from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager
+from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager, set_props
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
 
 from common import url as URL, raw_url as RAW_URL
 
-from data_manage import set_seasons_list, get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
+from data_manage import get_current_season_number, get_older_seasons, set_seasons_list, \
+                        get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
                         get_lists_with_top_players, prepare_data_about_top_players_for_datatable
 
@@ -66,6 +67,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], background_cal
 
 app.layout = dbc.Container([
 
+                
                 dbc.Row([
                     dcc.Dropdown(
                         id = 'select-season-dropdown',
@@ -76,6 +78,8 @@ app.layout = dbc.Container([
                             'marginTop': '20px',
                         }
                     ),
+                    html.Button(id="button_id", children="Get older seasons data"),
+                    html.Button(id="cancel_button_id", children="Cancel getting data"),
                 ]),
                 dbc.Row([
                     dbc.Col(
@@ -120,17 +124,12 @@ app.layout = dbc.Container([
     Output('main-table', 'children'),
     Output('main-table-legend', 'children'),
     Input('select-season-dropdown', 'value'),
-    Input('select-season-dropdown', 'options')
 )
-def update_season(value, options):
+def update_season(value):
 
-
-    print(options)
-
-
-    if value == "0":
-        get_seasons_data()
-        print("dodałem sezony")
+    # if value == "0":
+    #     get_seasons_data()
+    #     print("dodałem sezony")
 
 
     if value == "0":
@@ -971,10 +970,54 @@ def update_season(value, options):
 
 
 
-def get_seasons_data():
+@callback(
+    Input("button_id", "n_clicks"),
+    background=True,
+    running=[
+        (Output("button_id", "disabled"), True, False),
+        (Output("cancel_button_id", "disabled"), False, True),
+    ],
+    cancel=[Input("cancel_button_id", "n_clicks")],
+)
+def update_dropdwon_seasons_list(n_clicks):
+
+
+    older_seasons = get_older_seasons()
+
+    current_season = get_current_season_number()
+    current_season_label = "Season " + str(current_season) + " (Current season)"
+
+    #default_options = {'0': 'Season 2023/24 (Current season)'}
+
+    all_files_keys = [0]
+    all_files_value = [current_season_label]
+
+    for i in range(0, len(older_seasons)):
+
+
+        try:
+            get_season_data(i)
+        except:
+            print("Błąd przy pobieraniu danych sezonu")
+            continue
         
 
-        seasons_data_list = []
+        all_files_keys.append(i+1)
+        all_files_value.append("Season " + older_seasons[i])
+
+        print(f"DoDAJE SEZON: {older_seasons[i]}")
+
+        all_files_pairs = zip(all_files_keys, all_files_value)
+        all_files_dict = dict(all_files_pairs)
+
+
+        set_props("select-season-dropdown",
+                {"options": all_files_dict}
+        )
+
+
+def get_season_data(number):
+        
 
         service = Service()
 
@@ -996,47 +1039,36 @@ def get_seasons_data():
         driver.get(RAW_URL)
         #print(driver.current_url)
 
-        for i in range(3):
+        dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
+        dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
+        dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{number+1}]"""
+        body_xpath = """/html/body"""
+
+        page_source = ""
 
 
-            dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
-            dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-            dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{i+1}]"""
-            body_xpath = """/html/body"""
+        WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
-            page_source = ""
+        WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
 
+        WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
 
-            try:
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
 
+        page_str = elem.text
 
-                WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
+        page_source = elem.get_attribute('outerHTML')
 
-                WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+        #seasons_data_list.append(page_source)
 
-                WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
-
-                elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
-
-                page_str = elem.text
-    
-                page_source = elem.get_attribute('outerHTML')
-
-                #seasons_data_list.append(page_source)
-
-                current_filename = f"static\\stats\\season_{i+1}.html"
-                with open(current_filename , "w", encoding='utf-8') as f:
-                    f.write(page_source)
-
-            except Exception as e:
-                print(e)
+        current_filename = f"static\\stats\\season_{number+1}.html"
+        with open(current_filename , "w", encoding='utf-8') as f:
+            f.write(page_source)
 
             
         driver.quit()
 
-        
-
-        return seasons_data_list
+        return None
 
 
 server = app.server
