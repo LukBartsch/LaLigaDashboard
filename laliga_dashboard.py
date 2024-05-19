@@ -80,6 +80,7 @@ app.layout = dbc.Container([
                     ),
                     html.Button(id="button_id", children="Get older seasons data"),
                     html.Button(id="cancel_button_id", children="Cancel getting data"),
+                    html.Progress(id="progress_bar", value="0", style={"visibility": "hidden"}),
                 ]),
                 dbc.Row([
                     dbc.Col(
@@ -976,13 +977,22 @@ def update_season(value):
     running=[
         (Output("button_id", "disabled"), True, False),
         (Output("cancel_button_id", "disabled"), False, True),
+        (
+            Output("progress_bar", "style"),
+            {"visibility": "visible"},
+            {"visibility": "hidden"},
+        )
     ],
     cancel=[Input("cancel_button_id", "n_clicks")],
+    progress=[Output("progress_bar", "value"), Output("progress_bar", "max")],
+    prevent_initial_call=True
 )
-def update_dropdwon_seasons_list(n_clicks):
+def update_dropdwon_seasons_list(set_progress, n_clicks):
 
-
+    
     older_seasons = get_older_seasons()
+
+    set_progress((str(1), str(len(older_seasons))))
 
     current_season = get_current_season_number()
     current_season_label = "Season " + str(current_season) + " (Current season)"
@@ -1014,6 +1024,8 @@ def update_dropdwon_seasons_list(n_clicks):
         set_props("select-season-dropdown",
                 {"options": all_files_dict}
         )
+
+        set_progress((str(i+2), str(len(older_seasons))))
 
 
 def get_season_data(number):
