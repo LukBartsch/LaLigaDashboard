@@ -19,7 +19,7 @@ import pandas as pd
 
 from common import url as URL, raw_url as RAW_URL
 
-from data_manage import get_current_season_number, get_older_seasons, set_seasons_list, \
+from data_manage import get_current_season_number, get_older_seasons, set_default_season_list, \
                         get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
                         get_lists_with_top_players, prepare_data_about_top_players_for_datatable
@@ -72,7 +72,7 @@ app.layout = dbc.Container([
                             dbc.Col(
                                 dcc.Dropdown(
                                     id = 'select-season-dropdown',
-                                    options = set_seasons_list(),
+                                    options = set_default_season_list(),
                                     value = "0",
                                     clearable = False,
                                     style = {
@@ -111,21 +111,6 @@ app.layout = dbc.Container([
                         ]
                     ), 
 
-                
-                dbc.Row([
-                    # dcc.Dropdown(
-                    #     id = 'select-season-dropdown',
-                    #     options = set_seasons_list(),
-                    #     value = "0",
-                    #     clearable = False,
-                    #     style = {
-                    #         'marginTop': '20px',
-                    #     }
-                    # ),
-                    # html.Button(id="button_id", children="Get older seasons data"),
-                    # html.Button(id="cancel_button_id", children="Cancel getting data"),
-                    # html.Progress(id="progress_bar", value="0", style={"visibility": "hidden"}),
-                ]),
                 dbc.Row([
                     dbc.Col(
                         dbc.Row([

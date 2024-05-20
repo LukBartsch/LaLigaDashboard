@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from common import url as URL
 
 
-def set_seasons_list() -> dict:
+def set_default_season_list() -> dict:
     """Get list of all seasons available on website.
 
     Returns
@@ -23,15 +23,8 @@ def set_seasons_list() -> dict:
     current_season = get_current_season_number()
     current_season_label = "Season " + str(current_season) + " (Current season)"
 
-    dropdown_seasons = get_older_seasons()
-    
     all_files_keys = [0]
     all_files_value = [current_season_label]
-
-    # for num, option in enumerate(dropdown_seasons):
-    #     all_files_keys.append(num+1)
-    #     all_files_value.append("Season " + option)
-  
         
     all_files_pairs = zip(all_files_keys, all_files_value)
     all_files_dict = dict(all_files_pairs)
