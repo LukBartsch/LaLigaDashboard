@@ -67,20 +67,64 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], background_cal
 
 app.layout = dbc.Container([
 
+                dbc.Row(
+                        [
+                            dbc.Col(
+                                dcc.Dropdown(
+                                    id = 'select-season-dropdown',
+                                    options = set_seasons_list(),
+                                    value = "0",
+                                    clearable = False,
+                                    style = {
+                                        'marginTop': '20px',
+                                    }
+                                ),
+                            ),
+                            dbc.Col(
+                                [
+                                    dbc.Row(
+                                        [
+                                            dbc.Col(
+                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                            ),
+
+                                            dbc.Col(
+                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                            )
+
+                                        ],
+                                        style = {
+                                            'marginTop': '20px',
+                                    }),
+
+                                    dbc.Row(
+                                        html.Progress(id="progress_bar", value="0", style={"visibility": "hidden"}),
+                                        style = {
+                                            'marginTop': '10px',
+                                            'marginLeft': '5px',
+                                            'marginRight': '10px',
+                                            }
+                                    )   
+                                    
+                                ]
+                            ),
+                        ]
+                    ), 
+
                 
                 dbc.Row([
-                    dcc.Dropdown(
-                        id = 'select-season-dropdown',
-                        options = set_seasons_list(),
-                        value = "0",
-                        clearable = False,
-                        style = {
-                            'marginTop': '20px',
-                        }
-                    ),
-                    html.Button(id="button_id", children="Get older seasons data"),
-                    html.Button(id="cancel_button_id", children="Cancel getting data"),
-                    html.Progress(id="progress_bar", value="0", style={"visibility": "hidden"}),
+                    # dcc.Dropdown(
+                    #     id = 'select-season-dropdown',
+                    #     options = set_seasons_list(),
+                    #     value = "0",
+                    #     clearable = False,
+                    #     style = {
+                    #         'marginTop': '20px',
+                    #     }
+                    # ),
+                    # html.Button(id="button_id", children="Get older seasons data"),
+                    # html.Button(id="cancel_button_id", children="Cancel getting data"),
+                    # html.Progress(id="progress_bar", value="0", style={"visibility": "hidden"}),
                 ]),
                 dbc.Row([
                     dbc.Col(
