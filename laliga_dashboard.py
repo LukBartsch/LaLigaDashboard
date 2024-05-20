@@ -157,10 +157,6 @@ app.layout = dbc.Container([
 )
 def update_season(value):
 
-    # if value == "0":
-    #     get_seasons_data()
-    #     print("dodałem sezony")
-
 
     if value == "0":
 
@@ -169,69 +165,8 @@ def update_season(value):
 
     else:
 
-        # service = Service()
-
-        # options = webdriver.ChromeOptions()
-        # options.add_argument('--headless')
-        # options.add_argument('--log-level=3')
-        # options.add_experimental_option(
-        #     "prefs", {
-        #         # block image loading
-        #         "profile.managed_default_content_settings.images": 2,
-        #     }
-        # )
-
-        # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
-
-        # driver = webdriver.Chrome(options=options)
-        # wait = WebDriverWait(driver, 10)
-        # driver.get(RAW_URL)
-        # #print(driver.current_url)
-
-
-        # dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
-        # dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
-        # dropdown_list_option_xpath = f"""//*[@id="teamSummary"]/div/div[4]/div[2]/ul/li[{value}]"""
-        # body_xpath = """/html/body"""
-
-        # page_source = ""
-
-
-        # try:
-
-
-        #     WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
-
-        #     WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
-
-        #     WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
-
-        #     elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
-
-        #     page_str = elem.text
-  
-        #     page_source = elem.get_attribute('outerHTML')
-
-        # except Exception as e:
-        #     print(e)
-
-        
-
-        # with open("static\\stats\\current_page.html", "w", encoding='utf-8') as f:
-        #      f.write(page_source)
-        #driver.quit()
-        #print("=====================================")
-        #print(showmore_link)
-
-
-
-        #with open("static\\stats\\" + value, encoding="utf8") as f:
         with open(f"static\\stats\\season_{value}.html", encoding="utf-8") as f:
               contents = f.read()
-
-        #contents = showmore_link.execute_script("return document.documentElement.outerHTML;")
-
-        #contents = page_source
 
         soup = BeautifulSoup(contents, 'html.parser')
 
@@ -1026,25 +961,20 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
     current_season = get_current_season_number()
     current_season_label = "Season " + str(current_season) + " (Current season)"
 
-    #default_options = {'0': 'Season 2023/24 (Current season)'}
 
     all_files_keys = [0]
     all_files_value = [current_season_label]
 
     for i in range(0, len(older_seasons)):
 
-
         try:
             get_season_data(i)
         except:
-            print("Błąd przy pobieraniu danych sezonu")
             continue
         
-
         all_files_keys.append(i+1)
         all_files_value.append("Season " + older_seasons[i])
 
-        print(f"DoDAJE SEZON: {older_seasons[i]}")
 
         all_files_pairs = zip(all_files_keys, all_files_value)
         all_files_dict = dict(all_files_pairs)
@@ -1058,9 +988,7 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
 
 
 def get_season_data(number):
-        
-
-        service = Service()
+        """Get data for season number from the website and save it to the file."""
 
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
@@ -1071,10 +999,8 @@ def get_season_data(number):
                 "profile.managed_default_content_settings.images": 2,
             }
         )
-
         options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 
-        
         driver = webdriver.Chrome(options=options)
         wait = WebDriverWait(driver, 10)
         driver.get(RAW_URL)
@@ -1106,7 +1032,6 @@ def get_season_data(number):
         with open(current_filename , "w", encoding='utf-8') as f:
             f.write(page_source)
 
-            
         driver.quit()
 
         return None
