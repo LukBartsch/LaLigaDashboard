@@ -1,16 +1,10 @@
 import requests
-import time
-# import glob
-# import pathlib
 import os
 
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.select import Select
-from selenium.common.exceptions import ElementClickInterceptedException
 
 from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager, set_props
 import dash_bootstrap_components as dbc
@@ -22,7 +16,8 @@ from common import url as URL, raw_url as RAW_URL
 from data_manage import get_current_season_number, get_older_seasons, set_default_season_list, \
                         get_head_row, get_tooltips_row, get_body_rows, get_zone_explanation, \
                         get_league_header, clean_list, set_legend_colors, set_main_table_position_colors, \
-                        get_lists_with_top_players, prepare_data_about_top_players_for_datatable
+                        get_lists_with_top_players, prepare_data_about_top_players_for_datatable, \
+                        get_ovierview_column
 
 
 
@@ -347,22 +342,8 @@ def update_season(value):
 
 
 
-    #TODO: ONLY EXAMPLE
-    overview_columns = [
-        {"name": "Parameter", "id": "Parameter"},
-        {"name": "Value", "id": "Value"},
-    ]
-    parameters=['2.57', '47%', '53%']
-    values=['Goals / Match', 'First half', 'Second half']
-    df_overview = pd.DataFrame(
-        dict(
-            [
-                ("Parameter", parameters),
-                ("Value", values),
-            ]
-        )
-    )
-    data_overview=df_overview.to_dict("records")
+    overview_columns, data_overview = get_ovierview_column(soup)
+
 
 
 
