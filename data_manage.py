@@ -408,7 +408,6 @@ def set_main_table_position_colors(len_of_legend: int, season_number: str) -> Tu
     return champions_league_colors, europa_league_colors, europa_league_qualifiers_colors, relegation_colors
 
 
-
 def get_league_header(league_header_divs: BeautifulSoup) -> list:
     """Get data for league header
 
@@ -585,3 +584,75 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
     top_players_data_second_col=df_top_scorers.to_dict("records")
 
     return top_players_columns, top_players_data_first_col, top_players_data_second_col
+
+
+def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
+
+    try:
+        goal_match = soup.find('div', {'class':'row two-col cf ac'})
+        goal_match=goal_match.text.strip().split('\n\n\n')
+        goal_match = goal_match[0].split('\n')
+        goal_match_value = goal_match[0]
+        goal_match_label = goal_match[1].replace(' ', '')
+    except:
+        goal_match_value = ' '
+        goal_match_label = 'Goals / Match'
+
+
+
+    try:
+        first_half = soup.find('div', {'id':'beforeHalfTime'})
+        second_half = soup.find('div', {'id':'afterHalfTime'})
+
+        first_half = first_half.text.strip().split('%')
+        second_half = second_half.text.strip().split('%')
+
+        first_half_value = first_half[0] + '%'
+        second_half_value = second_half[0] + '%'
+
+        first_half_label = first_half[1]
+        second_half_label = second_half[1]
+
+    except:
+        first_half_value = '50%'
+        second_half_value = '50%'
+
+        first_half_label = 'First half'
+        second_half_label = 'Second half'
+
+
+
+
+    #TODO: ONLY EXAMPLE
+
+ 
+    overview_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
+    try:
+        parameters=[goal_match_value, first_half_value, second_half_value]
+        values=[goal_match_label, first_half_label, second_half_label]
+        df_overview = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", parameters),
+                    ("Value", values),
+                ]
+            )
+        )
+        data_overview=df_overview.to_dict("records")
+
+    except:
+        df_overview = pd.DataFrame(
+            dict(
+                [
+                    ("Parameter", ["a", "b", "c"]),
+                    ("Value", ["a", "b", "c"]),
+                ]
+            )
+        )
+        data_overview=df_overview.to_dict("records")
+
+
+    return overview_columns, data_overview
