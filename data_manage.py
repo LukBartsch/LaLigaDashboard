@@ -408,7 +408,6 @@ def set_main_table_position_colors(len_of_legend: int, season_number: str) -> Tu
     return champions_league_colors, europa_league_colors, europa_league_qualifiers_colors, relegation_colors
 
 
-
 def get_league_header(league_header_divs: BeautifulSoup) -> list:
     """Get data for league header
 
@@ -585,3 +584,143 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
     top_players_data_second_col=df_top_scorers.to_dict("records")
 
     return top_players_columns, top_players_data_first_col, top_players_data_second_col
+
+
+def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
+    """Get data for overview column
+
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object with data from website
+
+    Returns
+    -------
+    Tuple[list, dict]
+        Tuple with two elements:
+        - list with columns names
+        - dict with data for overview column
+    """
+    
+    try:
+        goal_match = soup.find('div', {'class':'row two-col cf ac'})
+        goal_match = goal_match.text.strip().replace('\n', '')
+        goal_match = goal_match.replace(' ', '')
+        goal_match = goal_match.split('Goals/Match')
+        goal_match_value = goal_match[0]
+        goal_match_label = 'Goals / Match'
+    except:
+        goal_match_value = ' '
+        goal_match_label = 'Goals / Match'
+
+
+    try:
+        first_half = soup.find('div', {'id':'beforeHalfTime'})
+        second_half = soup.find('div', {'id':'afterHalfTime'})
+
+        first_half = first_half.text.strip().split('%')
+        second_half = second_half.text.strip().split('%')
+
+        first_half_value = first_half[0] + '%'
+        second_half_value = second_half[0] + '%'
+
+        first_half_label = first_half[1] + ' (goals)'
+        second_half_label = second_half[1] + ' (goals)'
+
+    except:
+        first_half_value = '50%'
+        second_half_value = '50%'
+
+        first_half_label = 'First half'
+        second_half_label = 'Second half'
+
+
+
+    overview_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
+
+    parameters=[goal_match_value, first_half_value, second_half_value]
+    values=[goal_match_label, first_half_label, second_half_label]
+    df_overview = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    data_overview=df_overview.to_dict("records")
+
+    return overview_columns, data_overview
+
+
+def get_stats_column(soup: BeautifulSoup) -> Tuple[list, dict]:
+    """Get data for stats column
+
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object with data from website
+
+    Returns
+    -------
+    Tuple[list, dict]
+        Tuple with two elements:
+        - list with columns names
+        - dict with data for stats column
+    """
+
+
+    try:
+
+        stats_list = soup.find_all('h3', {'class':'sixer'})
+        extra_stats_list = soup.find_all('p', {'class':'dark-gray mt01e'})
+        
+        min_goal = stats_list[0].text.strip()
+        min_goal = min_goal.replace('min/Goal', '')
+        min_goal = min_goal + ' min/goal'
+
+        goals_in_matches = extra_stats_list[0].text.strip()
+        goals_in_matches = goals_in_matches.replace('(', '')
+        goals_in_matches = goals_in_matches.replace(')', '')
+
+        clean_sheets = stats_list[2].text.strip()
+
+        clean_sheets_in_matches = extra_stats_list[2].text.strip()
+        clean_sheets_in_matches = clean_sheets_in_matches.replace('(', '')
+        clean_sheets_in_matches = clean_sheets_in_matches.replace(')', '')
+
+        both_teams_scored = stats_list[4].text.strip()
+
+        both_teams_scored_in_matches = extra_stats_list[4].text.strip()
+        both_teams_scored_in_matches = both_teams_scored_in_matches.replace('(', '')
+        both_teams_scored_in_matches = both_teams_scored_in_matches.replace(')', '')
+
+    except:
+        min_goal = 'min/goal'
+        goals_in_matches = 'goals in matches'
+        clean_sheets = 'Clean Sheets'
+        clean_sheets_in_matches = 'clean sheets in matches'
+        both_teams_scored = 'Both Teams Scored'
+        both_teams_scored_in_matches = 'both teams scored in matches'
+
+
+    stats_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
+    parameters=[min_goal, clean_sheets, both_teams_scored]
+    values=[goals_in_matches, clean_sheets_in_matches, both_teams_scored_in_matches]
+    df_stats = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    data_stats=df_stats.to_dict("records")
+
+    return stats_columns, data_stats
