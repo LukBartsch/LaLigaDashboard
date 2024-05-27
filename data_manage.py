@@ -587,17 +587,31 @@ def prepare_data_about_top_players_for_datatable(name_list: list, value_list: li
 
 
 def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
+    """Get data for overview column
 
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object with data from website
+
+    Returns
+    -------
+    Tuple[list, dict]
+        Tuple with two elements:
+        - list with columns names
+        - dict with data for overview column
+    """
+    
     try:
         goal_match = soup.find('div', {'class':'row two-col cf ac'})
-        goal_match=goal_match.text.strip().split('\n\n\n')
-        goal_match = goal_match[0].split('\n')
+        goal_match = goal_match.text.strip().replace('\n', '')
+        goal_match = goal_match.replace(' ', '')
+        goal_match = goal_match.split('Goals/Match')
         goal_match_value = goal_match[0]
-        goal_match_label = goal_match[1].replace(' ', '')
+        goal_match_label = 'Goals / Match'
     except:
         goal_match_value = ' '
         goal_match_label = 'Goals / Match'
-
 
 
     try:
@@ -610,8 +624,8 @@ def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
         first_half_value = first_half[0] + '%'
         second_half_value = second_half[0] + '%'
 
-        first_half_label = first_half[1]
-        second_half_label = second_half[1]
+        first_half_label = first_half[1] + ' (goals)'
+        second_half_label = second_half[1] + ' (goals)'
 
     except:
         first_half_value = '50%'
@@ -622,37 +636,21 @@ def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
 
 
 
-
-    #TODO: ONLY EXAMPLE
-
- 
     overview_columns = [
         {"name": "Parameter", "id": "Parameter"},
         {"name": "Value", "id": "Value"},
     ]
-    try:
-        parameters=[goal_match_value, first_half_value, second_half_value]
-        values=[goal_match_label, first_half_label, second_half_label]
-        df_overview = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", parameters),
-                    ("Value", values),
-                ]
-            )
-        )
-        data_overview=df_overview.to_dict("records")
 
-    except:
-        df_overview = pd.DataFrame(
-            dict(
-                [
-                    ("Parameter", ["a", "b", "c"]),
-                    ("Value", ["a", "b", "c"]),
-                ]
-            )
+    parameters=[goal_match_value, first_half_value, second_half_value]
+    values=[goal_match_label, first_half_label, second_half_label]
+    df_overview = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
         )
-        data_overview=df_overview.to_dict("records")
-
+    )
+    data_overview=df_overview.to_dict("records")
 
     return overview_columns, data_overview
