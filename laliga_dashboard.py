@@ -968,7 +968,9 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
     for i in range(0, len(older_seasons)):
 
         try:
-            get_season_data(i)
+            result = get_season_data(i, current_season)
+            if not result:
+                continue
         except:
             continue
         
@@ -987,7 +989,7 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
         set_progress((str(i+2), str(len(older_seasons))))
 
 
-def get_season_data(number):
+def get_season_data(number, current_season):
         """Get data for season number from the website and save it to the file."""
 
         options = webdriver.ChromeOptions()
@@ -1026,7 +1028,9 @@ def get_season_data(number):
 
         page_source = elem.get_attribute('outerHTML')
 
-        #seasons_data_list.append(page_source)
+        if 'current '+ current_season + ' season' in page_source:
+            return False
+
 
         current_filename = f"static\\stats\\season_{number+1}.html"
         with open(current_filename , "w", encoding='utf-8') as f:
@@ -1034,7 +1038,7 @@ def get_season_data(number):
 
         driver.quit()
 
-        return None
+        return True
 
 
 server = app.server
