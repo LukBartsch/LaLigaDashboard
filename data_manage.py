@@ -654,3 +654,73 @@ def get_ovierview_column(soup: BeautifulSoup) -> Tuple[list, dict]:
     data_overview=df_overview.to_dict("records")
 
     return overview_columns, data_overview
+
+
+def get_stats_column(soup: BeautifulSoup) -> Tuple[list, dict]:
+    """Get data for stats column
+
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        BeautifulSoup object with data from website
+
+    Returns
+    -------
+    Tuple[list, dict]
+        Tuple with two elements:
+        - list with columns names
+        - dict with data for stats column
+    """
+
+
+    try:
+
+        stats_list = soup.find_all('h3', {'class':'sixer'})
+        extra_stats_list = soup.find_all('p', {'class':'dark-gray mt01e'})
+        
+        min_goal = stats_list[0].text.strip()
+        min_goal = min_goal.replace('min/Goal', '')
+        min_goal = min_goal + ' min/goal'
+
+        goals_in_matches = extra_stats_list[0].text.strip()
+        goals_in_matches = goals_in_matches.replace('(', '')
+        goals_in_matches = goals_in_matches.replace(')', '')
+
+        clean_sheets = stats_list[2].text.strip()
+
+        clean_sheets_in_matches = extra_stats_list[2].text.strip()
+        clean_sheets_in_matches = clean_sheets_in_matches.replace('(', '')
+        clean_sheets_in_matches = clean_sheets_in_matches.replace(')', '')
+
+        both_teams_scored = stats_list[4].text.strip()
+
+        both_teams_scored_in_matches = extra_stats_list[4].text.strip()
+        both_teams_scored_in_matches = both_teams_scored_in_matches.replace('(', '')
+        both_teams_scored_in_matches = both_teams_scored_in_matches.replace(')', '')
+
+    except:
+        min_goal = 'min/goal'
+        goals_in_matches = 'goals in matches'
+        clean_sheets = 'Clean Sheets'
+        clean_sheets_in_matches = 'clean sheets in matches'
+        both_teams_scored = 'Both Teams Scored'
+        both_teams_scored_in_matches = 'both teams scored in matches'
+
+
+    stats_columns = [
+        {"name": "Parameter", "id": "Parameter"},
+        {"name": "Value", "id": "Value"},
+    ]
+    parameters=[min_goal, clean_sheets, both_teams_scored]
+    values=[goals_in_matches, clean_sheets_in_matches, both_teams_scored_in_matches]
+    df_stats = pd.DataFrame(
+        dict(
+            [
+                ("Parameter", parameters),
+                ("Value", values),
+            ]
+        )
+    )
+    data_stats=df_stats.to_dict("records")
+
+    return stats_columns, data_stats
