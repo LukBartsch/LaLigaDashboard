@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager, set_props
+from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager#, set_props
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -80,11 +80,11 @@ app.layout = dbc.Container([
                                     dbc.Row(
                                         [
                                             dbc.Col(
-                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", disabled=True, style={'width': '300px', 'outline': 'white solid 1px'}),
                                             ),
 
                                             dbc.Col(
-                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", disabled=True, style={'width': '300px', 'outline': 'white solid 1px'}),
                                             )
 
                                         ],
@@ -942,9 +942,9 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
         all_files_dict = dict(all_files_pairs)
 
 
-        set_props("select-season-dropdown",
-                {"options": all_files_dict}
-        )
+        # set_props("select-season-dropdown",
+        #         {"options": all_files_dict}
+        # )
 
         set_progress((str(i+2), str(len(older_seasons))))
 
