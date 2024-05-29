@@ -1,12 +1,12 @@
 import requests
 import os
 
-#from selenium import webdriver
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.common.by import By
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
-from dash import Dash, dash_table, html, dcc, Input, Output, callback#, DiskcacheManager, CeleryManager#, set_props
+from dash import Dash, dash_table, html, dcc, Input, Output, callback, DiskcacheManager, CeleryManager, set_props
 import dash_bootstrap_components as dbc
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -39,25 +39,25 @@ tab_selected_style = {
 
 
 
-# if "REDIS_URL" in os.environ:
-#     # Use Redis & Celery if REDIS_URL set as an env variable
-#     from celery import Celery
+if "REDIS_URL" in os.environ:
+    # Use Redis & Celery if REDIS_URL set as an env variable
+    from celery import Celery
 
-#     celery_app = Celery(
-#         __name__, broker=os.environ["REDIS_URL"], backend=os.environ["REDIS_URL"]
-#     )
-#     background_callback_manager = CeleryManager(celery_app)
+    celery_app = Celery(
+        __name__, broker=os.environ["REDIS_URL"], backend=os.environ["REDIS_URL"]
+    )
+    background_callback_manager = CeleryManager(celery_app)
 
-# else:
-#     # Diskcache for non-production apps when developing locally
-#     import diskcache
+else:
+    # Diskcache for non-production apps when developing locally
+    import diskcache
 
-#     cache = diskcache.Cache("./cache")
-#     background_callback_manager = DiskcacheManager(cache)
+    cache = diskcache.Cache("./cache")
+    background_callback_manager = DiskcacheManager(cache)
 
 
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP]) #background_callback_manager=background_callback_manager
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], background_callback_manager=background_callback_manager)
 
 
 app.layout = dbc.Container([
@@ -80,11 +80,11 @@ app.layout = dbc.Container([
                                     dbc.Row(
                                         [
                                             dbc.Col(
-                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", disabled=True, style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
                                             ),
 
                                             dbc.Col(
-                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", disabled=True, style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
                                             )
 
                                         ],
@@ -942,9 +942,9 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
         all_files_dict = dict(all_files_pairs)
 
 
-        # set_props("select-season-dropdown",
-        #         {"options": all_files_dict}
-        # )
+        set_props("select-season-dropdown",
+                {"options": all_files_dict}
+        )
 
         set_progress((str(i+2), str(len(older_seasons))))
 
@@ -952,21 +952,21 @@ def update_dropdwon_seasons_list(set_progress, n_clicks):
 def get_season_data(number, current_season):
         """Get data for season number from the website and save it to the file."""
 
-        #options = webdriver.ChromeOptions()
-        #options.add_argument('--headless')
-        #options.add_argument('--log-level=3')
-        # options.add_experimental_option(
-        #     "prefs", {
-        #         # block image loading
-        #         "profile.managed_default_content_settings.images": 2,
-        #     }
-        # )
-        # options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--log-level=3')
+        options.add_experimental_option(
+            "prefs", {
+                # block image loading
+                "profile.managed_default_content_settings.images": 2,
+            }
+        )
+        options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
 
-        # driver = webdriver.Chrome(options=options)
-        # wait = WebDriverWait(driver, 10)
-        # driver.get(RAW_URL)
-        #print(driver.current_url)
+        driver = webdriver.Chrome(options=options)
+        wait = WebDriverWait(driver, 10)
+        driver.get(RAW_URL)
+        print(driver.current_url)
 
         dropdown_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]"""
         dropdown_list_xpath = """//*[@id="teamSummary"]/div/div[4]/div[2]/ul"""
@@ -976,27 +976,27 @@ def get_season_data(number, current_season):
         page_source = ""
 
 
-        # WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
+        WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_xpath))).click()
 
-        # WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
+        WebDriverWait(driver,20).until(EC.visibility_of_element_located((By.XPATH, dropdown_list_xpath)))
 
-        # WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
+        WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH, dropdown_list_option_xpath))).click()
 
-        # elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
+        elem = wait.until(EC.visibility_of_element_located((By.XPATH, body_xpath)))
 
-        # page_str = elem.text
+        page_str = elem.text
 
-        # page_source = elem.get_attribute('outerHTML')
+        page_source = elem.get_attribute('outerHTML')
 
-        # if 'current '+ current_season + ' season' in page_source:
-        #     return False
+        if 'current '+ current_season + ' season' in page_source:
+            return False
 
 
-        # current_filename = f"static\\stats\\season_{number+1}.html"
-        # with open(current_filename , "w", encoding='utf-8') as f:
-        #     f.write(page_source)
+        current_filename = f"static\\stats\\season_{number+1}.html"
+        with open(current_filename , "w", encoding='utf-8') as f:
+            f.write(page_source)
 
-        # driver.quit()
+        driver.quit()
 
         return True
 
