@@ -1,7 +1,7 @@
 # LaLigaDashboard
 Dash app to monitor the current results in the Spanish football league (Primera División - known like La Liga).
 
-Available [_here_](https://laligadashboard.onrender.com) - demo version.
+Available [_here_](https://laligadashboard.host888382.xce.pl/) - demo version.
 
 
 ## Table of Contents
@@ -41,7 +41,7 @@ The main view with results for the selected season (default current season).
 
 In addition to the main data in the table, the application allows you to view various statistics for a given season - e.g. best scorers, best assistants or best goalkeepers.
 
-Thanks to Selenium and the queuing mechanism, you can download data for past seasons and view various statistics at the same time.
+Thanks to Selenium and the queuing mechanism (caching with background callbacks), you can download data for past seasons and view various statistics at the same time. This feature is only available in a local environment.
 
 ## Setup
 * Clone repository
@@ -55,11 +55,8 @@ pip install -r requirements.txt
 python laliga_dashboard.py
 ```
 ## Project Status
-Application deployed in beta version on free cloud hosting that is synchronized with GitHub. However, when starting the application for the first time, wait a few seconds to wake up the server on which the application is installed.
-In the future, the application will be developed in terms of:
-* Optimization of operation
-* Refinement of the graphical interface
-* Preventing to data errors
+Application deployed in demo version on hosting. Caching with background callbacks (Selenium) is only available in a local environment.
+
 
 ## Contributing
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
