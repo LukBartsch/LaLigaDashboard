@@ -37,7 +37,7 @@ Data collection is only for the purpose of development and learning programming.
 ## Features
 The main view with results for the selected season (default current season).
 
-![alt text](static/image.png)
+![image](https://github.com/user-attachments/assets/bb3df9fa-d6d0-4b0d-abfe-6f0d774d1567)
 
 In addition to the main data in the table, the application allows you to view various statistics for a given season - e.g. best scorers, best assistants or best goalkeepers.
 
