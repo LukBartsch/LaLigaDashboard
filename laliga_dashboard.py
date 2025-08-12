@@ -68,7 +68,7 @@ app.layout = dbc.Container([
                                 dcc.Dropdown(
                                     id = 'select-season-dropdown',
                                     options = set_default_season_list(),
-                                    value = "0",
+                                    value = "Current season",
                                     clearable = False,
                                     style = {
                                         'marginTop': '20px',
@@ -80,11 +80,11 @@ app.layout = dbc.Container([
                                     dbc.Row(
                                         [
                                             dbc.Col(
-                                                dbc.Button(id="button_id", children="Get older seasons data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="button_id", children="Get older seasons data", disabled=True, color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
                                             ),
 
                                             dbc.Col(
-                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
+                                                dbc.Button(id="cancel_button_id", children="Cancel getting data", disabled=True, color="dark", style={'width': '300px', 'outline': 'white solid 1px'}),
                                             )
 
                                         ],
@@ -153,14 +153,14 @@ app.layout = dbc.Container([
 def update_season(value):
 
 
-    if value == "0":
+    if value == "Current season":
 
         response = requests.get(URL)
         soup = BeautifulSoup(response.text, 'html.parser')
 
     else:
 
-        with open(f"static\\stats\\season_{value}.html", encoding="utf-8") as f:
+        with open("static\\stats\\" + value, encoding="utf-8") as f:
               contents = f.read()
 
         soup = BeautifulSoup(contents, 'html.parser')
