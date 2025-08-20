@@ -1,7 +1,7 @@
 # LaLigaDashboard
 Dash app to monitor the current results in the Spanish football league (Primera División - known like La Liga).
 
-Available [_here_](https://laligadashboard.host888382.xce.pl/) - demo version.
+Available [_here_](https://laliga.host888382.xce.pl/) - demo version.
 
 
 ## Table of Contents
